@@ -31,7 +31,7 @@ The repository welcomes contributions and feedback to ensure robust and inclusiv
 
 ### How to Contribute
 1. Open an issue for new gaps or proposed changes to the roadmap.
-2. Participate in [discussions](https://github.com/eu-digital-identity-wallet/ec-internal-standards/discussions) to refine objectives and align with international standards.
+2. Participate in the [**Discussions**](https://github.com/eu-digital-identity-wallet/ec-internal-standards/discussions) to refine objectives and align with international standards.
 
 ## Reach Out
 For questions, suggestions, or further details, feel free to reach out via the **[Discussions](https://github.com/eu-digital-identity-wallet/ec-internal-standards/discussions)** section of this repository.
