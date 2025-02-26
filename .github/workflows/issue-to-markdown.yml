@@ -4,6 +4,9 @@ on:
   issues:
     types: [labeled]
 
+permissions:
+  contents: write
+
 jobs:
   issue_to_markdown:
     if: contains(github.event.label.name, 'locked')
@@ -15,7 +18,7 @@ jobs:
       - name: Convert Issue to Markdown
         id: convert
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           issue_number=${{ github.event.issue.number }}
           curl -s -H "Authorization: token $GITHUB_TOKEN" \
@@ -25,12 +28,18 @@ jobs:
           echo "# ${{ github.event.issue.title }}" > issues/issue-$issue_number.md
           echo "\n\n${{ github.event.issue.body }}" >> issues/issue-$issue_number.md
           echo "\n## Comments" >> issues/issue-$issue_number.md
-          jq -r '.[] | "\n### \(.user.login) commented:\n \(.body)"' comments.json >> issues/issue-$issue_number.md
+          cat comments.json
+          if jq -e . >/dev/null 2>&1 < comments.json; then
+            jq -r '.[] | "\n### \(.user.login) commented:\n \(.body)"' comments.json >> issues/issue-$issue_number.md
+            mv comments.json issues/issue-$issue_number-comments.json
+          else
+            echo "\nNo comments available." >> issues/issue-$issue_number.md
+          fi
       - name: Commit Markdown
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          git checkout -b feat/capture-issues
+          git checkout feat/capture-issues
           git add issues/
           git commit -m "Convert locked issue ${{ github.event.issue.number }} to markdown"
           git push origin feat/capture-issues
