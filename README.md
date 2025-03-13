@@ -60,7 +60,7 @@ A **timeline visualisation** of STS development, including:
 - **Join discussions**: Participate in **[GitHub Discussions](https://github.com/eu-digital-identity-wallet/ec-internal-standards/discussions)** to share insights and contribute.  
 
 ## Additional Resources  
-- **Field & Label Descriptions**: [View Documentation](./sts-roadmap-documentation.md)  
+- **Standardization Repository Guide**: [View Documentation](./docs/guide.md)  
 
 ## License  
 This repository is licensed under the **[Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)**. You are free to share and adapt the material, provided appropriate credit is given, and any modifications are indicated.  
