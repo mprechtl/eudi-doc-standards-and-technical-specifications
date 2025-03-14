@@ -70,4 +70,4 @@ Labels are used to categorize and filter issues based on regulatory references, 
 - Reference the **GitHub Project Board** ([View Board](https://github.com/orgs/eu-digital-identity-wallet/projects/29)) to see how issues are assigned statuses.
 - Filter issues using **labels** in the [Issues List](https://github.com/eu-digital-identity-wallet/ec-internal-standards/issues) to find relevant topics.
 
-For additional clarifications, please participate in **[GitHub Discussions](https://github.com/eu-digital-identity-wallet/ec-internal-standards/discussions)**.
+For additional clarifications, please participate in **[GitHub Discussions](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions)**.
