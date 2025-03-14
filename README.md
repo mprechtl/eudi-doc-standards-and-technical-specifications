@@ -1,7 +1,7 @@
-# EUDI Wallet Standardisation Strategy
+# EUDI Wallet Standards and Technical Specifications
 
 ## Overview  
-The **European Digital Identity (EUDI) Wallet Standardisation Strategy** aims to provide a structured and transparent approach to tracking, evaluating, and aligning the necessary **Standards and Technical Specifications (STS)** with the relevant **Implementing Acts (IA)** of [Regulation (EU) No 910/2014](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014R0910) as amended by [Regulation (EU) 2024/1183](https://eur-lex.europa.eu/eli/reg/2024/1183/oj/eng) establishing the European Digital Identity Framework.  
+The **European Digital Identity (EUDI) Wallet Standards and Technical Specifications** aims to provide a structured and transparent approach to tracking, evaluating, and aligning the necessary **Standards and Technical Specifications (STS)** with the relevant **Implementing Acts (IA)** of [Regulation (EU) No 910/2014](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014R0910) as amended by [Regulation (EU) 2024/1183](https://eur-lex.europa.eu/eli/reg/2024/1183/oj/eng) establishing the European Digital Identity Framework.  
 
 This repository serves as a centralized resource for:  
 - **Gap Analysis**: Identifying missing or incomplete standards required for the EUDI Wallet ecosystem.  
@@ -57,7 +57,7 @@ A **timeline visualisation** of STS development, including:
 
 ### 3. Engage with the Project  
 - **Comment on issues**: External stakeholders can provide feedback and discuss identified gaps.  
-- **Join discussions**: Participate in **[GitHub Discussions](https://github.com/eu-digital-identity-wallet/ec-internal-standards/discussions)** to share insights and contribute.  
+- **Join discussions**: Participate in **[GitHub Discussions](./discussions)** to share insights and contribute.  
 
 ## Additional Resources  
 - **Standardization Repository Guide**: [View Documentation](./docs/guide.md)  
