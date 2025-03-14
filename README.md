@@ -57,7 +57,7 @@ A **timeline visualisation** of STS development, including:
 
 ### 3. Engage with the Project  
 - **Comment on issues**: External stakeholders can provide feedback and discuss identified gaps.  
-- **Join discussions**: Participate in **[GitHub Discussions](./discussions)** to share insights and contribute.  
+- **Join discussions**: Participate in **[GitHub Discussions](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions)** to share insights and contribute.  
 
 ## Additional Resources  
 - **Standardization Repository Guide**: [View Documentation](./docs/guide.md)  
