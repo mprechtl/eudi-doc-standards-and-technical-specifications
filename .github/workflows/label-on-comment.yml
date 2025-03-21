@@ -16,11 +16,11 @@ jobs:
           script: |
             const issue = context.payload.issue;
             const labels = issue.labels.map(label => label.name);
-            if (!labels.includes('needs-review')) {
+            if (!labels.includes('needs review')) {
               github.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                labels: ['needs-review']
+                labels: ['needs review']
               });
             }
