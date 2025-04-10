@@ -6,6 +6,9 @@ The **European Digital Identity (EUDI) Wallet Standards and Technical Specificat
 This repository serves as a centralized resource for:  
 - **Gap Analysis**: Identifying missing or incomplete standards required for the EUDI Wallet ecosystem.  
 - **Roadmap Planning**: Defining a timeline for when these gaps will be addressed and new STS will be ready for reference in Implementing Acts.  
+- **Technical Specifications**: Listing the ([technical specifications](docs/technical-specifications/README.md)) that are being developed by the EC, in collaboration with the European Digital
+Identity Cooperation Group and the European Standards Organisations (ESO), to support the implementation of the
+European Digital Identity Wallet
 - **Public Transparency**: Offering a clear view of the ongoing work and enabling feedback from stakeholders.  
 
 > [!IMPORTANT]  
@@ -45,6 +48,8 @@ A **timeline visualisation** of STS development, including:
 - **Start & Target Dates** for each STS  
 - **Expected milestone when an STS is anticipated to meet the technical requirements of the EUDI Wallet**  
 
+
+
 ## How to Use This Repository  
 
 ### 1. Explore Identified Standardisation Gaps  
@@ -56,7 +61,8 @@ A **timeline visualisation** of STS development, including:
 - Check the **[Project Board](https://github.com/orgs/eu-digital-identity-wallet/projects/29)** to see progress.  
 
 ### 3. Engage with the Project  
-- **Comment on issues**: External stakeholders can provide feedback and discuss identified gaps.  
+- **Comment on issues**: External stakeholders can provide feedback and discuss identified gaps.
+- **Provide feedback**: Stakeholders are invited to provide feedback and discuss the [listed standards](docs/technical-specifications/README.md).
 - **Join discussions**: Participate in **[GitHub Discussions](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions)** to share insights and contribute.  
 
 ## Additional Resources  
