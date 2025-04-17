@@ -75,7 +75,7 @@ A Wallet Unit Attestation SHALL be a JSON Web Token (JWT) as specified in [RFC75
 The ARF specifies that OID4VCI is to be used to transport the WUA used for issuance, hence the format of the WUA shall be supported by OID4VCI. 
 
 ### 2.2.1 Options within the OID4VCI Protocol
-Before, discussing the options for transport of Issuance WUAs, we briefly sketch the OID4VCI protocol. There are three entities in the protocol: 
+Before, discussing the options for transport of Issuance WUAs, we briefly sketch the OID4VCI protocol. There are four entities in the protocol: 
 1. An End-User.
 2. A Wallet.
 3. An Authorization Server
@@ -91,14 +91,14 @@ Further details can be found here [OIDF OpenID for Verifiable Credential Issuanc
 
 The OID4VCI protocol allows to transfer attestations from Wallet Providers to Issuers (Attestation Providers) through Wallets at two different levels: 
 1. They can be sent along the Authorization Request and the Token Request from the Wallet to the Authorization Server (i.e., in step 2 of the above protocol sketch) as a [OAuth 2.0 Attestation-Based Client Authentication](https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/). This is referred to as a Wallet Attestation. It is worth noting that that OAuth 2.0 Attestation-Based Client Authentication must include a Proof-of-Possession to a *Client Instance Key* key also appearing in the Wallet Attestation.
-2. They can be sent in the Credential Request in a `proofs` field from Wallet to Issuance Server (i.e., in step 4 of the above protocol sketch).
+2. They can be sent in the Credential Request in a `proofs` field from Wallet to Credential Issuer (i.e., in step 4 of the above protocol sketch).
 
 Three proof types are defined within the specification and can be sent along the Credential Request: 
 * `jwt`: A JWT proof of possession (PoP) on a (list of) key(s) (i.e., a signature on challenge from context). This may also include a `key_attestation` JWT within the header of the `jwt` proof type JWT.
 * `ldp_vp`: A W3C Verifiable Presentation used as PoP. 
 * `attestation`: A `key_attestation` JWT which does not include a proof of possession from the Wallet. However, it may include a `nonce` from the context of the OID4VCI. This can be used to ensure the freshness of the attestation from the Wallet Provider.
 
-The purpose of the Wallet Attestation is to let the wallet authenticate towards the authorization server as a valid wallet that has not been revoked. 
+The purpose of the Wallet Unit Attestation is to let the wallet authenticate towards the authorization server as a valid wallet that has not been revoked. 
 The `key_attestation` has the purpose of attesting to how the secret keys, corresponding to the public keys present in the issued credentials, are stored. 
 
 To use this to enable the HLR about the WUA functionality related to Issuance several paths forward are viable:
@@ -279,12 +279,12 @@ We will use the following abbreviations when discussing the solutions.
 ### 2.5.2 Revocation proposal
 
 With the above solutions in mind, we propose to use the chunked status list described in Section 2.5.1, i.e. a separate status list is generated for all WUAs issued each single day. The URI will have a format similar to: 
-`https://revocation_url/statuslists/2024/12/24/` for WUAs issued on Dec. 24, 2024. We note that status lists encourage compression, which will reduce the size in general. It is also possible to do additional chunking to further reduce the status list sizes. A similar approach to revocation status list are used elsewhere in the ARF and it would prefered if the same method could also be used for WUA.
+`https://revocation_url/statuslists/2024/12/24/` for WUAs issued on Dec. 24, 2024. We note that status lists encourage compression, which will reduce the size in general. It is also possible to do additional chunking to further reduce the status list sizes. A similar approach to revocation status list are used elsewhere in the ARF and it would be preferable if the same method could also be used for WUA.
 
 Regarding the scalability of the described proposal, a rough calculation of the complexity for a status list corresponding to one day is provided below:
 Assuming a Wallet Provider servicing 80 mio. Wallet Units, each having 10 WUAs issued per day (in order to support each wallet obtaining 10 new types of attestations per day), this will result in revocation information for one day for 8 * 10^8 WUAs. Assuming 64 bits are used for the revocation identifier, the stored revocation information will require roughly 6.4 GB of storage. The (uncompressed) status list will therefore be around 6.4 GB per day. However, very high compression rates are expected due to the nature of the status lists, and the compressed lists are estimated to be in the size of MBs.
 
-We note that each wallet having 10 different credentials to issued each day probably is an exaggerated estimate by a factor of 5-10 depending on the life-time of the credentials. 
+We note that each wallet having 10 different credentials to issue each day probably is an exaggerated estimate by a factor of 5-10 depending on the life-time of the credentials. 
  
 > Note that if this is deemed impractical, then the size of the chunks of the status list can be reduced further. For example it could be reduced to 10^5 which will give a compressed bit string status list in the range of hundreds of bytes. 
 
