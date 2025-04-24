@@ -13,6 +13,7 @@ The present document specifies the technical specification and requirements for 
 | Version | Date | Description |
 |---------|------------|------------|
 | `0.1` | 03.04.2025 | Initial version for discussion |
+| `0.2` | 23.04.2025 | Updates based on first group meeting |
 
 ## 1 Introduction and Overview
 This document provides a technical overview of existing Zero-Knowledge Proof (ZKP) 
@@ -43,7 +44,9 @@ BBS+ is a digital signature protocol which is used for signing a set of
 messages.  It was first envisioned by Boneh, Boyen, Shacham in [BBS2004] (from
 where it takes its name), touched and re-visited by [Cam2016]. Currently under
 standardisation by the IRTF Crypto Forum Research Group [Loo2025] based on the
-improvements presented in [Tes2023]. 
+improvements presented in [Tes2023], as well as by ISO/IEC in "ISO/IEC PWI 24843 
+Privacy-preserving attribute-based credentials". The description of BBS+ in the rest of this
+section is based on [Tes2023]. 
 
 #### 2.1.1.1 Issuance
 The PID or Attestation Provider transforms a PID or attestation into a list of 
@@ -60,20 +63,22 @@ that the disclosed messages are indeed part of the original list of messages
 signed by the Provider.
 
 #### 2.1.1.3 Performance
-BBS+ proof generation and verification is reported to be less than 10ms. The size 
+BBS+ proof generation and verification is reported to be less than 2ms. The size 
 of the BBS+ proof is 272+32*i bytes, where i is the number of hidden messages. 
 
 #### 2.1.1.4 Discussion
 BBS+ achieves high performance and its building blocks are well-researched. However.
 pairing-based cryptographic algorithms and pairing friendly elliptic curves are not
-standardized and they are not supported by existing Hardware Security Modules (HSMs).
+standardized and they are not supported by existing Hardware Security Modules (HSMs),
+Secure Elements, or SIM cards.
 Similarly, algorithms for transforming attestation formats specified in [ISO/IEC 18013-5] or [SD-JWT VC]
 into list of messages are missing. Finally, the BBS+ approach under standardization
 does not consider binding of an attestation to a public key controlled by the Wallet Unit
 of the User. 
 
-### 2.1.2 BBS# and Server-Aided Anonymous Credentials (SAAC)
-BBS# [Des2025] and SAAC [Api2025] leverage a construction known as Keyed-Verification Anonymous Credentials (KVAC),
+### 2.1.2 Pairing-free BBS schemes
+Recent efforts (BBS# [Des2025] and SAAC [Api2025]) propose pairing-free variants
+of BBS. These schemes leverage a construction known as Keyed-Verification Anonymous Credentials (KVAC),
 which is a type of anonymous credential used in a special setting where the Provider and the
 Relying Party are the same entity (i.e., they share a private key). KVACs are very
 efficient, do not rely on pairings, and are widely adopted in the Signal messaging system [Cha2020].
@@ -83,6 +88,10 @@ messages using a paring free variant of BBS signatures [BBS2004]  and then allow
 to reveal a subset of these messages, proving at the same time that it knows
 a valid MAC over the complete list of messages; this proof can be verified using
 the Provider's secret key.  
+Additionally, BBS# proposes a solution for device-binding from ECDSA-signatures, 
+relying on re-randomization of ECDSA signatures and public keys. Furthermore, 
+a trust model for BBS# that covers revocation and proof of validity is defined
+in [BBT2025].
 
 #### 2.1.2.1 Issuance
 The PID or Attestation Provider transforms a PID or attestation into a list of 
@@ -110,21 +119,56 @@ of the WSCD, and for proving possession of the corresponding private key, which 
 stored securely within the WSCD.
 
 #### 2.1.2.3 Performance
-[Orr2024] reports for BBS# proof generation and verification times of less than 2.5ms in high-end
+[Des2025] reports for BBS# proof generation and verification times of less than 2.5ms in high-end
 mobile devices. Similarly reports that the size of a BBS# presentation proof is 416+U*32
 bytes, where U denotes the number of hidden messages. 
 
 #### 2.1.2.4 Discussion
 BBS# and SAAC offer high performance but introduce additional communication between 
 the Relying Party or Wallet Unit and the Provider. This additional interaction is 
-comparable in complexity and volume to batch issuance of attestations. Notably, 
-both schemes avoid the use of pairing-based cryptography, however, some components 
-of these schemes still require standardization. 
+comparable in  volume to batch issuance of attestations. Notably, 
+both schemes avoid the use of pairing-based cryptography, however, they 
+still require standardization. 
 
 BBS# supports binding an attestation to a public key controlled by the Wallet Unit 
 and stored securely within the associated WSCD. On the other hand, the operations 
 required from the Provider side are not currently supported by existing Hardware 
 Security Modules (HSMs).
+
+### 2.1.3 BBS with ECDSA proof of possession 
+Recent ZKP schemes enable the proof of possession of a secret key corresponding 
+to an ECDSA digital signature, along with a commitment to the associated public key.
+These schemes can be constructed using either Sigma protocols [Cel2024] or zkSNARKs
+[Woo2025]. By combining such a proof mechanism with BBS signatures, it 
+becomes possible to bind an attestation to a private key stored in a WSCD.
+
+#### 2.1.3.1 Issuance
+The PID or Attestation Provider follows the same steps described in section 2.1.1.1
+including however in the list of signed message a public key generated by the
+the user's WSCD.
+
+#### 2.1.3.2 Presentation
+The Wallet Unit performs the steps described in section 2.1.1.2 making sure that
+the public key included in the list of messages is hidden. It then performs the
+following additional steps: it creates a commitment of the public key, it generates
+a proof that that the committed public key is the same as the (hidden) public
+key included in the attestation, it generates an ECDSA digital signature 
+of a fresh nonce using the
+device's WSCD, it generates a proof that signature can be verified using the 
+committed public key. 
+
+#### 2.1.3.3 Performance
+This approach introduces some additional overhead related to  proofs.
+[Cel2024] report proof size equal to 1.5kB, and proof generation and verification 
+times 4.8ms and 3.1ms respectively in a Macbook M1 with 8 GB of memory. [Woo2025]
+reports proof generation time 1.6msec. and proof verification time 1.7msec in a
+AMD Ryzen Threadripper 5995WX 1.8GHz CPU, 256 GBs RAM server. Similarly, [Woo2025]
+reports proof size equal to 406 bytes. 
+
+#### 2.1.3.4 Discussion
+The performance of these schemes is comparable to BBS# with a stronger security
+model for device binding. These schemes still
+require standardization.   
 
 ## 2.2 Proofs for arithmetic circuits (programmable ZKPs)
 
@@ -226,9 +270,11 @@ and stored securely within the associated WSCD.
 | [Ame2017] | Scott Ames, Carmit Hazay, Yuval Ishai,  Muthuramakrishnan Venkitasubramaniam, "Ligero: Lightweight Sublinear Arguments Without a Trusted Setup", in ACM CCS 2017
 | [Api2025] | Rutchathon Chairattana-Apirom, Franklin Harding, Anna Lysyanskaya, and Stefano Tessaro, "Server-Aided Anonymous Credentials," available at <https://eprint.iacr.org/2025/513>, 2025
 | [Bar2016] | Amira Barki, Solenn Brunet, Nicolas Desmoulins, and Jacques Traor´e, "Improved algebraic MACs and practical keyed-verification anonymous credentials," In Roberto Avanzi and Howard M. Heys, editors, SAC 2016, volume 10532 of LNCS, pages 360–380. Springer, Cham, August 2016
-| [Des2025] | Nicolas Desmoulins, Antoine Dumanois, Seyni Kane, and Jacques Traoré, “The BBS# protocol”, Technical Report, 2025 |
+| [BBT2025] | Trust Model : Securing digital identity with advanced cryptographic algorithms, available at https://github.com/Orange-OpenSource/BBS-SHARP-doc-eudi-wallet ,  2025
+| [Des2025] | Nicolas Desmoulins, Antoine Dumanois, Seyni Kane, and Jacques Traoré, “Making BBS Anonymous Credentials eIDAS 2.0 Compliant”, Cryptology ePrint Archive, Paper 2025/619, 2025, available at <https://eprint.iacr.org/2025/619> |
 | [Topic_G] | Discussion Paper for the European Digital Identity Cooperation Group regarding Topic G: Zero Knowledge Proof, version 1.4 |
 | [BBS2004] | Boneh, Dan, Xavier Boyen, and Hovav Shacham. "Short group signatures." In Annual international cryptology conference, pp. 41-55. Berlin, Heidelberg: Springer Berlin Heidelberg, 2004. |
+| [Cel2024] | Sofia Celi, Shai Levin, and Joe Rowell, "CDLS: proving knowledge of committed discrete logarithms with soundness," Progress in Cryptology – AFRICACRYPT 2024 |
 | [Cha2020] | M Chase, T Perrin, G Zaverucha "The Signal Private Group System and Anonymous Credentials Supporting Efficient Verifiable Encryption." In ACM CCS 2020 |
 | [ETSI\_119476] | ETSI TR 119 476 V1.2.1, Electronic Signatures and Trust  Infrastructures (ESI); Analysis of selective disclosure and zero-knowledge proofs applied to Electronic Attestation of Attributes |
 | [Fri2024] | Matteo Frigo and abhi shelat, Anonymous credentials from ECDSA, Cryptology ePrint Archive, Paper 2024/2010, 2024, available at <https://eprint.iacr.org/2024/2010> |
@@ -238,5 +284,6 @@ and stored securely within the associated WSCD.
 | [Orr2024] | Michele Orrù, Stefano Tessaro, Greg Zaverucha, Chenzhi Zhu, "Oblivious issuance of proofs", In Annual International Cryptology Conference, 2024 |
 | [Paq2024] | Christian Paquin, Guru-Vamsi Policharla, and Greg Zaverucha, "Crescent: Stronger Privacy for Existing Credentials, Cryptology ePrint Archive, Paper 2024/2013, 2024, available at <https://eprint.iacr.org/2024/2013> |
 | [Tes2023] |Tessaro, S. and C. Zhu, "Revisiting BBS Signatures", In EUROCRYPT, 2023|
+| [Woo2025] | Anna P. Y. Woo, Alex Ozdemir, Chad Sharp, Thomas Pornin, and Paul Grubbs, "Efficient proofs of possession for legacy signature,". IEEE Security and Privacy, 2025 |
 
 
