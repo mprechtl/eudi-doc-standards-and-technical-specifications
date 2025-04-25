@@ -32,12 +32,12 @@ The drafting process follows five key steps:
 1. The **initial draft** of the technical specification is published on GitHub,
 outlining its objectives, scope, and context.
 2. A **dedicated discussion thread** is created in the
-[GitHub discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/discussions) for each technical specification.
-3. The discussion remains open for **three weeks**. While not all comments will
+[GitHub discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/categories/technical-specification-discussion) for each technical specification.
+1. The discussion remains open for **three weeks**. While not all comments will
 receive direct responses, all input will be carefully considered.
-4. **Approximately seven weeks** after the initial draft's publication, the
+1. **Approximately seven weeks** after the initial draft's publication, the
 Commission will release a **revised version** incorporating relevant feedback.
-5. The published version remains open for **further comments and refinements**
+1. The published version remains open for **further comments and refinements**
 on GitHub.
 
 ## Technical Specifications
@@ -48,12 +48,12 @@ its corresponding GitHub discussion area and roadmap issue.
 
 | Id | Title | | |
 |----|-------|--|--|
-| **TS01** | [Specification of EUDI Wallet Trust Mark](ts1-eudi-wallet-trust-mark.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/discussions/425) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/18) |
-| **TS02** | [Specification of systems enabling the notification and subsequent publication of Provider information](ts2-notification-publication-provider-information.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/discussions/427) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/23) |
-| **TS03** | [Specification of Wallet Unit Attestations (WUA) used in issuance of PID and Attestations](ts3-wallet-unit-attestation.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/discussions/450) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/17) |
-| **TS04** | [Specification for Zero-Knowledge Proof (ZKP) Implementation in EUDI Wallet](ts4-zkp.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/discussions/485) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/268) |
-| **TS05** | Common Formats and API for Relying Party Registration Information | Discussion area | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/14) |
-| **TS06** | Common Set of Relying Party Information to be Registered | Discussion area | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/16) |
+| **TS01** | [Specification of EUDI Wallet Trust Mark](ts1-eudi-wallet-trust-mark.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/353) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/18) |
+| **TS02** | [Specification of systems enabling the notification and subsequent publication of Provider information](ts2-notification-publication-provider-information.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/354) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/23) |
+| **TS03** | [Specification of Wallet Unit Attestations (WUA) used in issuance of PID and Attestations](ts3-wallet-unit-attestation.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/355) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/17) |
+| **TS04** | [Specification for Zero-Knowledge Proof (ZKP) Implementation in EUDI Wallet](ts4-zkp.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/356) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/268) |
+| **TS05** | [Common Formats and API for Relying Party Registration Information](ts5-common-formats-and-api-for-rp-registration-information.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/357) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/14) |
+| **TS06** | [Common Set of Relying Party Information to be Registered](ts6-common-set-of-rp-information-to-be-registered.md) | [Discussion area](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/discussions/358) | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/16) |
 | **TS07** | Specification of Common Interface for Data Deletion Requests to Relying Parties | Discussion area | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/20) |
 | **TS08** | Specification of Common Interface for Lodging Complaints to DPAs | Discussion area | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/19) |
 | **TS09** | Specification of Wallet-to-Wallet Interactions | Discussion area | [Roadmap issue](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/22) |
