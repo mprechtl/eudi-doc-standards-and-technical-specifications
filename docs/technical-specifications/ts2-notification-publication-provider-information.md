@@ -10,12 +10,14 @@ The present document specifies the data model and systems enabling the notificat
 
 ## Versioning
 
-| Version | Date        | Description                                                                                                                                                                                       |
-|---------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `0.1`   | 16.01.2025  | Initial version for first discussions.                                                                                                                                                            |
-| `0.2`   | 10.02.2025  | Version with first feedback integrated.                                                                                                                                                           |
-| `0.3`   | 09.03.2025  | Version with more comments integrated.                                                                                                                                                            |
-| `0.4`  | 09.04.2025 | Version with more comments integrated and separation of ``LegalEntity`` and ``Provider``. ``IntendedUse`` has been introduced and specification text has been closely aligned with class diagram. | 
+| Version | Date       | Description                                                                                                                                                                                                                                                           |
+|---------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `0.1`   | 16.01.2025 | Initial version for first discussions.                                                                                                                                                                                                                                |
+| `0.2`   | 10.02.2025 | Version with first feedback integrated.                                                                                                                                                                                                                               |
+| `0.3`   | 09.03.2025 | Version with more comments integrated.                                                                                                                                                                                                                                |
+| `0.4`   | 09.04.2025 | Version with more comments integrated and separation of ``LegalEntity`` and ``Provider``. ``IntendedUse`` has been introduced and specification text has been closely aligned with class diagram.                                                                     | 
+| `0.9`  | 25.04.2025  | Version with slightly updated data model and specification of notification system. | 
+
 
 ## 1. Introduction and Overview
 
@@ -59,7 +61,7 @@ and the published drafts of the forthcoming implementing acts [Draft of the CIR 
 while keeping the [SEMIC Style Guide](https://semiceu.github.io/style-guide/1.0.0/index.html) in mind and aligning it with the [Core Business Vocabulary](https://semiceu.github.io/Core-Business-Vocabulary/releases/2.2.0/) as much
 as reasonable.
 
-![EUDI-Providers](img/ts2-eudi-providers.svg)
+![ProviderDataModel](img/ts2-eudi-providers.svg)
 
 As outlined in the above figure, it contains the following **main classes**:
 
@@ -74,10 +76,8 @@ As outlined in the above figure, it contains the following **main classes**:
 
 These classes are defined using the following **auxiliary classes**
 
-* **Claim**
 * **Document**
 * **Identifier**
-* **IntendedUse**
 * **Law**
 * **LegalPerson**
 * **NaturalPerson**
@@ -92,26 +92,27 @@ Its design takes into account that all the involved legal entities may either be
 generic attributes related to a legal entity, which are relevant here. It contains the attributes specified in the following table:
 
 
-| Attribute          | Multiplicity | Type                                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-|--------------------|--------------|---------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `legalPerson`      | [0..1]       | [*LegalPerson*](#296-legalperson)     | specifies the specific attributes of a **legal person**. This attribute is present, if and only if the legal entity is a private or public legal person.                                                                                                                                                                                                                                                                                                       |
-| `naturalPerson`    | [0..1]       | [*NaturalPerson*](#297-naturalperson) | specifies the specific attributes of a **natural person**. This attribute is present, if and only if the legal entity is a natural person.                                                                                                                                                                                                                                                                                                                     |
-| ``identifier``     | [0..*]       | [*Identifier*](#293-identifier)       | may be present in order to specify one or more **identifiers** of the legal entity, as stated in an official record together with the identification data of that official record, if applicable.                                                                                                                                                                                                                                                              |
-| ``postalAddress`` | [0..*]       | *string*                              | may be present in order to specify the **postal address** of the legal entity in line with clause 6.6.1 of recommendation [ITU-T X.520](https://www.itu.int/rec/T-REC-X.520/en).                                                                                                                                                                                                                                                                               |
-| ``country``        | [1..1]       | *string*                              | specifies the alpha-2 **country code** according to ISO 3166-1 of the country in which the legal entity is established, or the string "EU" for providers operating on a European level.                                                                                                                                                                                                                                                                |
-| ``email``          | [0..*]       | *string*                              | may be present in order to specify one or more **email addresses** according to [RFC5322](https://www.rfc-editor.org/rfc/rfc5322.html) of the legal entity.                                                                                                                                                                                                                                                                                                                 
-| ``phone``          | [0..*]       | *string*                              | may be present in order to specify one or more **phone numbers** of the legal entity starting with the ‘+’ symbol as the international code prefix and the country code, followed by numbers only as specified in [RFC2806](https://www.rfc-editor.org/rfc/rfc2806.html).                                                                                                                                                                                                  
-| ``infoURI``        | [0..*]       | *string*                              | may be present in order to specify one or more Unique Resource Identifiers (URIs) according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html) with **webpages for information** about the legal entity.                                                                                                                                                                                                                                                                                                                                                                
+| Attribute          | Multiplicity | Type                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|--------------------|--------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `legalPerson`      | [0..1]       | [*LegalPerson*](#294-legalperson)      | specifies the specific attributes of a **legal person**. This attribute is present, if and only if the legal entity is a private or public legal person.                                                                                                                                                                                                                                                                                                       |
+| `naturalPerson`    | [0..1]       | [*NaturalPerson*](#295-naturalperson) | specifies the specific attributes of a **natural person**. This attribute is present, if and only if the legal entity is a natural person.                                                                                                                                                                                                                                                                                                                     |
+| `identifier`     | [0..*]       | [*Identifier*](#292-identifier)        | may be present in order to specify one or more **identifiers** of the legal entity, as stated in an official record together with the identification data of that official record, if applicable.                                                                                                                                                                                                                                                              |
+| `postalAddress` | [0..*]       | *string*                               | may be present in order to specify the **postal address** of the legal entity in line with clause 6.6.1 of recommendation [ITU-T X.520](https://www.itu.int/rec/T-REC-X.520/en).                                                                                                                                                                                                                                                                               |
+| `country`        | [1..1]       | *string*                               | specifies the alpha-2 **country code** according to ISO 3166-1 of the country in which the legal entity is established, or the string "EU" for providers operating on a European level.                                                                                                                                                                                                                                                                |
+| `email`          | [0..*]       | *string*                               | may be present in order to specify one or more **email addresses** according to [RFC5322](https://www.rfc-editor.org/rfc/rfc5322.html) of the legal entity.                                                                                                                                                                                                                                                                                                                 
+| `phone`          | [0..*]       | *string*                               | may be present in order to specify one or more **phone numbers** of the legal entity starting with the ‘+’ symbol as the international code prefix and the country code, followed by numbers only as specified in [RFC2806](https://www.rfc-editor.org/rfc/rfc2806.html).                                                                                                                                                                                                  
+| `infoURI`        | [0..*]       | *string*                               | may be present in order to specify one or more Unique Resource Identifiers (URIs) according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html) with **webpages for information** about the legal entity.                                                                                                                                                                                                                                                                                                                                                                
 
 ### 2.2 Provider
 
 The ``Provider`` class inherits all attributes from the more general ``LegalEntity`` class specified above and is the central class of the
 data model from which the other classes for the individual provider classes derive. It contains the attributes specified in the following table:
 
-| Attribute | Multiplicity | Type                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-|---------------|--------------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ``policy`` | [1..*]       | [*Policy*](#298-policy) | specifies the type and URL of a webpage where the relevant **service policy** (e.g. registration policy or trust service policy) or **privacy policy** or **terms and conditions statement** of the provider are located, where applicable.                                                                                                                                                                                                                                                                                                                                                  |
-| ``x5c`` | [0..*]      | *string*                  | specifies a sequence of **X.509 certificate chains** according to [RFC 7515](https://www.rfc-editor.org/rfc/rfc7515.html), where each certificate chain is compliant to [RFC 3647](https://www.rfc-editor.org/rfc/rfc3647.html) and [RFC 5280](https://www.rfc-editor.org/rfc/rfc5280.html), if used by the provider for all its services. Specifying more than one certificate chain here allows to support key rollover procedures. In case of a ``TrustServiceProvider`` this element is not present, as the relevant certificate chains are assigned to the individual ``TrustService``. |
+| Attribute           | Multiplicity | Type                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|---------------------|--------------|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `providerType` | [1..1]      | *string*                | specifies the **type** of the provider according to its sub-class, as it is necessary for the specification of the API in [clause 3.2](#3-2-components-and-interfaces), whereas the following values are defined in the present document: <ul><li>`WRPRegistrar`</li><li>`WalletProvider`</li><li>`PIDProvider`</li><li>`PubEEAProvider`</li>`WRPAccCertProvider`</li><li>`WalletRelyingParty`</li></ul>                                                                                                                                                                                     |
+| `policy`          | [1..*]       | [*Policy*](#295-policy) | specifies the type and URL of a webpage where the relevant **service policy** (e.g. registration policy or trust service policy) or **privacy policy** or **terms and conditions statement** of the provider are located, where applicable.                                                                                                                                                                                                                                                                                                                                                  |
+| `x5c`             | [0..*]       | *string*                | specifies a sequence of **X.509 certificate chains** according to [RFC 7515](https://www.rfc-editor.org/rfc/rfc7515.html), where each certificate chain is compliant to [RFC 3647](https://www.rfc-editor.org/rfc/rfc3647.html) and [RFC 5280](https://www.rfc-editor.org/rfc/rfc5280.html), if used by the provider for all its services. Specifying more than one certificate chain here allows to support key rollover procedures. In case of a ``TrustServiceProvider`` this element is not present, as the relevant certificate chains are assigned to the individual ``TrustService``. |
 
 ### 2.3 WRPRegistrar
 
@@ -170,10 +171,9 @@ the European Commission:
 The ``WalletProvider`` class is used for this kind of notification and inherits all attributes from the ``Provider``
 class. In addition to the attributes of the ``Provider`` class it contains the attributes specified in the following table:
 
-| Attribute       | Multiplicity | Type                                           | Description                                                            |
-|-----------------|--------------|------------------------------------------------|------------------------------------------------------------------------|
-| `walletSol` | [1..*]      | [*WalletSolution*](#2910-walletsolution) | specifies details with respect to the **wallet solution**. |
-
+| Attribute       | Multiplicity | Type                                      | Description                                                            |
+|-----------------|--------------|-------------------------------------------|------------------------------------------------------------------------|
+| `walletSol` | [1..*]      | [*WalletSolution*](#297-walletsolution) | specifies details with respect to the **wallet solution**. |
 
 ### 2.5 PIDProvider
 
@@ -219,10 +219,10 @@ class, which in turn inherits all attributes from the ``LegalEntity`` class. Not
 entity, which is established by some public law and hence the element ``establishedByLaw`` in ``LegalPerson`` shall always be present.  
 In addition to the attributes of the ``Provider`` class the ``PubEEAProvider`` class contains the attributes specified in the following table:
 
-| Attribute | Multiplicity | Type                         | Description |
-|-------------|--------------|------------------------------|-----------------|
-| `EEAIssuer` | [0..1] | [*Provider*](#22-provider)   | specifies the details of the *EEA issuer**, if it is not identical to the public sector body, which is responsible for the authentic source indicated in the ``Provider`` class. |
-| `car` | [1..*] | [*Document*](#292-document) | contains the **conformity assessment report** mentioned in Article 45f (3) of (EU) No 910/2014 consisting of one or more ``Document`` elements. |
+| Attribute | Multiplicity | Type                        | Description |
+|-------------|--------------|-----------------------------|-----------------|
+| `EEAIssuer` | [0..1] | [*Provider*](#22-provider)  | specifies the details of the *EEA issuer**, if it is not identical to the public sector body, which is responsible for the authentic source indicated in the ``Provider`` class. |
+| `car` | [1..*] | [*Document*](#291-document) | contains the **conformity assessment report** mentioned in Article 45f (3) of (EU) No 910/2014 consisting of one or more ``Document`` elements. |
 
 ### 2.7 WRPAccCertProvider
 
@@ -233,9 +233,9 @@ It simply inherits the attributes from the ``TrustServiceProvider`` class, which
 the attributes from the ``Provider`` class and ``LegalEntity`` class and adds one or more `trustSrv` attributes,
 as specified in the following table:
 
-| Attribute | Multiplicity | Type                                | Description |
-|-----------------------|--------------|-------------------------------------|---|
-| `trustSrv` | [1..*] | [*TrustService*](#299-trustservice) | specifies the **details of the trust service**. |
+| Attribute | Multiplicity | Type                                 | Description |
+|-----------------------|--------------|--------------------------------------|---|
+| `trustSrv` | [1..*] | [*TrustService*](#296-trustservice) | specifies the **details of the trust service**. |
 
 According to Article 5a Nr. 18 (d) of (EU) No 910/2014 the EU Member States shall notify the European Commission about
 the mechanism for the validation of the identity of the Wallet-Relying Parties. As stipulated by the implementing acts
@@ -289,16 +289,17 @@ X.509-based "Wallet-Relying Party Access Certificates" issued by a suitable Cert
 > of the ``WalletRelyingParty`` class, even if there is no notification procedure, which directly involves
 > Wallet-Relying Parties.
 
-> **NOTE 3 (CIR for Registration of Wallet-Relying Parties is still draft):**
+> **NOTE 3 (CIR for Registration of Wallet-Relying Parties is not yet formally published):**
 > This section should be treated with caution, as the implementing act according to the Article 5b of
 > (EU) No. 910/2014 is currently only available as [Draft of the CIR for RP-Registration](https://tinyurl.com/IA-5b-draft),
 > and may therefore change until final publication and endorsement. The text below is based on the publicly 
 > available draft of the implementing act and already includes the concept of "intended use of attributes",
 > which in turn corresponds to the concept of "purpose" according to Art. 5 1. (b) of [(EU) 2016/679](http://data.europa.eu/eli/reg/2016/679/oj).  
-> The text below will be replaced with the final text as soon as it is available. 
+> The text below will be replaced with the published text as soon as it is available. 
 
-> **NOTE 4 (Data Model for Wallet-Relying Party may later be shifted to other document):**
-> The part of the data model which addresses Wallet-Relying Parties may be shifted to another document later on. 
+> **NOTE 4 (Data Model for Wallet-Relying Party will later be shifted to other document):**
+> The part of the data model which addresses Wallet-Relying Parties is planned to be dropped as soon 
+> as it is available in [TS5](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/tree/main/docs/technical-specifications). 
 
 According to Article 3 and Annex I of [Draft of the CIR for RP-Registration](https://tinyurl.com/IA-5b-draft)
 the registration of Wallet-Relying Parties captures the following information:
@@ -378,30 +379,21 @@ the registration of Wallet-Relying Parties captures the following information:
 The ``WalletRelyingParty`` class is used for this kind of notification and inherits all attributes from the ``Provider``
 class. In addition to the attributes of the ``Provider`` class it contains the attributes specified in the following table:
 
-| Attribute              | Multiplicity | Type                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-|------------------------|--------------|----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `tradeName`            | [0..1]       | *string*                               | may be present in order to specify the **trade name** of the Wallet-Relying Party, if applicable.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `supportURI`           | [0..1]       | *string*                               | specifies the **support URI** for the service provided by the Wallet-Relying Party, if applicable. Note, that Annex I of [Draft of the CIR for RP-Registration](https://tinyurl.com/IA-5b-draft) stipulates that the Wallet-relying Party shall provide detailed contact information in form of (a) a website for helpdesk and support, (b) a phone number or (c) an e-mail address pertaining to its registration and intended use of the wallet units.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `srvDescription`       | [1..1]       | *string*                               | contains a **description of the service** provided by the Wallet-Relying Party.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `intendedUse`          | [1..*]      | [*IntendedUse*](#294-intendeduse)      | may appear one or more times in order to specify intended use cases in which the Wallet-Relying Party intends to rely on attributes of a wallet user presented by a wallet unit.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `isPSB`                | [1..1]       | *boolean*                              | indicates, whether the Wallet-Relying Party **is a public sector body** or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `entitlement`          | [1..*]       | *string*                               | specifies the **set of entitlements** of the Wallet-Relying Party in form of a URI according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html), whereas the following URIs are defined in the present document: <ul><li> http://data.europa.eu/eudi/entitlement/Service_Provider</li> <li> http://data.europa.eu/eudi/entitlement/QEAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/Non_Q_EAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/PUB_EAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/PID_Provider</li><li> http://data.europa.eu/eudi/entitlement/QCert_for_ESeal_Provider</li><li> http://data.europa.eu/eudi/entitlement/QCert_for_ESig_Provider</li><li> http://data.europa.eu/eudi/entitlement/rQSealCDs_Provider</li><li> http://data.europa.eu/eudi/entitlement/rQSigCDs_Provider</li><li> http://data.europa.eu/eudi/entitlement/ESig_ESeal_Creation_Provider</li></ul> |
-| `supervisoryAuthority` | [1..1]       | [*LegalEntity*](#21-legalentity) | specifies the competent **data protection supervisory authority** according to Article 51 of [(EU) 2016/679](http://data.europa.eu/eli/reg/2016/679/oj), which is in charge of supervising the Wallet-Relying Party.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Attribute                              | Multiplicity | Type                              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|----------------------------------------|--------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `tradeName`                            | [0..1]       | *string*                          | may be present in order to specify the **trade name** of the Wallet-Relying Party, if applicable.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `supportURI`                           | [0..1]       | *string*                          | specifies the **support URI** for the service provided by the Wallet-Relying Party, if applicable. Note, that Annex I of [Draft of the CIR for RP-Registration](https://tinyurl.com/IA-5b-draft) stipulates that the Wallet-relying Party shall provide detailed contact information in form of (a) a website for helpdesk and support, (b) a phone number or (c) an e-mail address pertaining to its registration and intended use of the wallet units.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `srvDescription`                       | [1..1]       | *string*                          | contains a **description of the service** provided by the Wallet-Relying Party.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `intendedUse`                          | [1..*]       | *IntendedUse* | may appear one or more times in order to specify intended use cases in which the Wallet-Relying Party intends to rely on attributes of a wallet user presented by a wallet unit.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `isPSB`                                | [1..1]       | *boolean*                         | indicates, whether the Wallet-Relying Party **is a public sector body** or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `entitlement`                          | [1..*]       | *string*                          | specifies the **set of entitlements** of the Wallet-Relying Party in form of a URI according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html), whereas the following URIs are defined in the present document: <ul><li> http://data.europa.eu/eudi/entitlement/Service_Provider</li> <li> http://data.europa.eu/eudi/entitlement/QEAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/Non_Q_EAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/PUB_EAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/PID_Provider</li><li> http://data.europa.eu/eudi/entitlement/QCert_for_ESeal_Provider</li><li> http://data.europa.eu/eudi/entitlement/QCert_for_ESig_Provider</li><li> http://data.europa.eu/eudi/entitlement/rQSealCDs_Provider</li><li> http://data.europa.eu/eudi/entitlement/rQSigCDs_Provider</li><li> http://data.europa.eu/eudi/entitlement/ESig_ESeal_Creation_Provider</li></ul> |
+| `providesAttestations`                 | [0..*]       | *string*                          | specifies the link to the [credential issuer metadata](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#section-11.2.2) of the attestation provider.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `usesIntermediary` | [0..1]      | [*Provider*](#22-provider)                 | indicates whether there is an intermediary according to [Article 5b (10) of (EU) No. 910/2014](https://www.eid.as/#article5b) and refers to it.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `supervisoryAuthority`                 | [1..1]       | [*LegalEntity*](#21-legalentity)  | specifies the competent **data protection supervisory authority** according to Article 51 of [(EU) 2016/679](http://data.europa.eu/eli/reg/2016/679/oj), which is in charge of supervising the Wallet-Relying Party.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ### 2.9 Auxiliary Classes
 
-#### 2.9.1 Claim
-
-The ``Claim`` class is used within the definition of the [``IntendedUse``](#27-walletrelyingparty) class. It contains the attributes specified in the following table:
-
-| Attribute | Multiplicity | Type | Description |
-|-------------------|--------------|-------------------|--------|
-| `friendlyName` | [1..1] | *string* | is the **user-friendly name** of the claim, which can be used for display purposes. |
-| `URI` | [1..1] | *string* | is the **URI** according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html), which **uniquely identifies the claim type** under consideration. <br/>The claim names defined in the Annex of (EU) 2024/2977 shall be prepended by the string ``http://data.europa.eu/eudi/claim/``. The claim ``family_name`` defined in the Annex of (EU) 2024/2977 is identified by the URI ``http://data.europa.eu/eudi/claim/family_name`` for example. |
-| `required` | [0..1] | *boolean* | indicates, whether there are one or more legal acts, which **require or recommend to access the claim** or not. If this attribute is missing, the default ``false`` is assumed. |
-| `isRequiredByLaw` | [0..*] | [*Law*](#284-law) | specifies the **legal act(s) according to which accessing the claim is required or recommended**. This attribute shall be present, if and only if ``required`` is ``true``. |
-
-#### 2.9.2 Document
+#### 2.9.1 Document
 
 The ``Document`` class is used within the definition of the [``WalletRelyingParty``](#25-pubeeaprovider) class. It contains the attributes specified in the following table:
 
@@ -410,7 +402,7 @@ The ``Document`` class is used within the definition of the [``WalletRelyingPart
 | `type` | [1..1] | *string* | is the **MIME type** of the document according to IETF RFC 2046. |
 | `content` | [1..1] | *string* | is the **content of the document** encoded as specified by its MIME type. |
 
-#### 2.9.3 Identifier
+#### 2.9.2 Identifier
 
 The ``Identifier`` class is used within the definition of the [``LegalEntity``](#21-legalentity) class.
 It contains the attributes specified in the following table:
@@ -426,37 +418,27 @@ It contains the attributes specified in the following table:
 > to be superfluous, as this is already covered by the EUID case, as this identifier is constructed to
 > contain the mentioned national business registration number.
 
-#### 2.9.4 IntendedUse
+#### 2.9.3 Law
 
-The ``IntendedUse`` class is used within the definition of the [``WalletRelyingParty``](#28-walletrelyingparty) class.
-It contains the attributes specified in the following table:
-
-| Attribute                 | Multiplicity | Type                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|---------------------------|--------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `purpose` | [1..*]       | string                 | specifies one or more **purposes** of the intended data processing according to Article 5 1. (b) of [(EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj)                                                                                                                                                                                                                                                            |
-| `requestableClaim`        | [1..*]       | [*Claim*](#291-claim) | specifies the set of potentially **requestable claims** which may be requested by the Wallet-Relying Party within the scope of the present intended use of data. In line with the data minimisation principle according to Article 5 1. (c) of [(EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj) the Wallet-Relying Party may only request the minimum set of claims necessary for a specific intended use case. |
-
-#### 2.9.5 Law
-
-The ``Law`` class is used within the definition of the [``Claim``](#291-claim) and [``LegalPerson``](#296-legalperson)
-classes. It contains the attributes specified in the following table:
+The ``Law`` class is used within the definition of the [``LegalPerson``](#294-legalperson)
+class. It contains the attributes specified in the following table:
 
 | Attribute | Multiplicity | Type | Description                                                                                                                                                                                                  |
 |---------------|--------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `lang` | [1..1] | *string* | is the two-letter Alpha-2 **language code** according to ISO 639 (Set 1).                                                                                                                                    |
 | `legalBasis` | [1..1] | *string* | specifies the **legal basis** according to which a [``LegalPerson``](#296-legalperson) is established as such or the access to a specific [``Claim``](#291-claim) is required or recommended. |
 
-#### 2.9.6 LegalPerson
+#### 2.9.4 LegalPerson
 
 The ``LegalPerson`` class is used within the definition of the [``LegalEntity``](#21-legalentity) 
 class and allows to specify the attributes of a legal person. It contains the attributes specified in the following table:
 
-| Attribute          | Multiplicity | Type                | Description                                                                                                                                                                                                                                                     |
-|--------------------|--------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `legalName`        | [1..*]       | *string*            | specifies the **legal name** of the legal person, as specified in an official record.                                                                                                                                                                           |
-| `establishedBylaw` | [0..*]      | [*Law*](#295-law) | specifies the **legal basis** on which the legal person is established. This information should in particular be present in case of a public sector body and it shall be present in case of a public sector body, which is responsible for an authentic source. |
+| Attribute          | Multiplicity | Type               | Description                                                                                                                                                                                                                                                     |
+|--------------------|--------------|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `legalName`        | [1..*]       | *string*           | specifies the **legal name** of the legal person, as specified in an official record.                                                                                                                                                                           |
+| `establishedBylaw` | [0..*]      | [*Law*](#293-law) | specifies the **legal basis** on which the legal person is established. This information should in particular be present in case of a public sector body and it shall be present in case of a public sector body, which is responsible for an authentic source. |
 
-#### 2.9.7 NaturalPerson
+#### 2.9.4 NaturalPerson
 
 The ``NaturalPerson`` class is used within the definition of the [``LegalEntity``](#21-legalentity)
 class and allows to specify the attributes of a natural person. It contains the attributes specified in the following table:
@@ -468,7 +450,7 @@ class and allows to specify the attributes of a natural person. It contains the 
 | `dateOfBirth`      | [0..1]      | *string*            | specifies the **data of birth** of the natural person, as specified in official records and the set of person identification data according to the Annex of [(EU) 2024/2977]( http://data.europa.eu/eli/reg_impl/2024/2977/oj), if present.                                       |
 | `placeOfBirth` | [0..1]      | *string*            | specifies the **place of birth** of the natural person, as specified in official records and the set of person identification data according to the Annex of [(EU) 2024/2977]( http://data.europa.eu/eli/reg_impl/2024/2977/oj), if present.                                      |
 
-#### 2.9.8 Policy
+#### 2.9.5 Policy
 
 The ``Policy`` class is used within the definition of the [``Provider``](#21-provider) class. It contains the attributes specified in the following table:
 
@@ -477,7 +459,7 @@ The ``Policy`` class is used within the definition of the [``Provider``](#21-pro
 | `type` | [1..1] | *string* | specifies the **type of the policy** in form of a URI according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html), whereas the following URIs are defined in the present document: <ul><li>http://data.europa.eu/eudi/policy/trust-service-practice-statement - is a **Trust Service Practice statement** according to clause 6.1 of [ETSI EN 319 401](https://www.etsi.org/deliver/etsi_en/319400_319499/319401/03.01.01_60/en_319401v030101p.pdf).</li><li>http://data.europa.eu/eudi/policy/terms-and-conditions - is a **Terms and Conditions** statement according to clause 6.2 of [ETSI EN 319 401](https://www.etsi.org/deliver/etsi_en/319400_319499/319401/03.01.01_60/en_319401v030101p.pdf).</li><li>http://data.europa.eu/eudi/policy/privacy-statement - is a **Privacy Statement** to fulfil the information requirements of Article 12 ff [(EU) 2016/679](http://data.europa.eu/eli/reg/2016/679/oj).</li><li>http://data.europa.eu/eudi/policy/privacy-policy - is a **Privacy Policy** according to the clauses 3.14 and 5.6 of ISO/IEC 29100.</li><li>http://data.europa.eu/eudi/policy/registration-policy - is a **Registration Policy** according to Article 4 of [Draft of the CIR for RP-Registration](https://tinyurl.com/IA-5b-draft).</li> </ul> |
 | `policyURI` | [1..1] | *string* | specifies the **policy URI** in form of a URL according to [RFC1738](https://www.rfc-editor.org/rfc/rfc1738.html) where the policy is published. |
 
-#### 2.9.9 TrustService
+#### 2.9.6 TrustService
 
 The **TrustService** class is used within the definition of the [TrustServiceProvider](#286-trustservice) class. It contains the attributes specified in the following table:
 
@@ -492,7 +474,7 @@ The **TrustService** class is used within the definition of the [TrustServicePro
 | `srvQualifier` | [0..*]       | *string* | specifies the **Service information extensions** of the Trust Service according to clause 5.5.9 of [ETSI TS 119 612](https://www.etsi.org/deliver/etsi_ts/119600_119699/119612/02.03.01_60/ts_119612v020301p.pdf).                                                                                                                    |
 
 
-#### 2.9.10 WalletSolution
+#### 2.9.7 WalletSolution
 
 The **WalletSolution** class is used within the definition of the [WalletProvider](#24-walletprovider) class. It contains the attributes specified in the following table:
 
@@ -504,26 +486,44 @@ The **WalletSolution** class is used within the definition of the [WalletProvide
 
 ## 3. Notification System
 
-> **NOTE 6 (Specification of the Notification System will follow):**
-> The specification of the Notification System will follow in a future revision of the present document. It is envisioned that the
-> specification will cover at least contain (1) an overview of the **System Architecture** and (2) the main **Components and Interfaces**. 
-> This forthcoming version of the document will also adddress the topic of trust management including the handling of trusted lists.   
+As defined in [Article 3 (1) of (EU) 2024/2980](http://data.europa.eu/eli/reg_impl/2024/2980/oj), the Commission 
+will make available to Member States a *Secure Electronic Notification System* enabling Member States to notify
+the information on the bodies and mechanisms referred to in [Article 5a(18) of (EU) No 910/2014](https://www.eid.as/#article5a) 
+and specified in more detail in the [Annexes of (EU) 2024/2980](http://data.europa.eu/eli/reg_impl/2024/2980/oj) and the present document. 
+
+The Member States will submit the relevant information according to [Article 4 of (EU) 2024/2980](http://data.europa.eu/eli/reg_impl/2024/2980/oj) to the Commission and the
+Commission will in turn publish the relevant information according to [Article 4 of (EU) 2024/2980](http://data.europa.eu/eli/reg_impl/2024/2980/oj) 
+in form of a suitable *Trusted List* according to [Article 5 of (EU) 2024/2980](http://data.europa.eu/eli/reg_impl/2024/2980/oj).
 
 ### 3.1 System Architecture
 
+The envisioned system architecture for the Secure Electronic Notification System described in the present document is fairly simple and mainly consists of
+
+* the *Secure Electronic Notification System* operated by the European Commission and 
+* decentral *Client Components* operated  by the Member States and other stakeholders within the EUDI ecosystem, which rely on the Trusted List(s) respectively,
+
+as outlined in the following figure. 
+
+![NotificationSystem](img/ts2-eudi-notification-system.svg)
+
 ### 3.2 Components and Interfaces
+
+The Secure Electronic Notification System has the following interfaces:
+
+1. the *Application Programming Interface (API)* as defined by the [OpenAPI](https://spec.openapis.org/oas/latest.html)-specification provided in [Annex A.2](#a2-openapi-specifications-normative)
+2. a suitable *Web Interface* which is at least accessible by the authorized member state representatives and 
+3. a web endpoint,  where the *Trusted List(s)* according to [Article 5 of (EU) 2024/2980](http://data.europa.eu/eli/reg_impl/2024/2980/oj) and related information is available.
 
 ## Annex A
 
 ### A.1 JSON-Schema (normative)
 
-The file [``EUDI-Provider.json``](api/ts2-eudi-provider.json) contains the JSON-Schema definitions corresponding to the Data Model specified in [clause 2](#2-data-model) above.
+The file [``ts-2-eudi-provider.json``](api/ts2-eudi-provider.json) contains the JSON-Schema definitions corresponding to the Data Model specified in [clause 2](#2-data-model) above.
 
 ### A.2 OpenAPI-Specifications (normative)
 
-> **NOTE 7 (OpenAPI-Specification will follow):** The [OpenAPI](https://spec.openapis.org/oas/latest.html)-specification of the
-> JSON- and REST-based interfaces described in [clause 3.2](#32-components-and-interfaces) will follow in a future revision of the present document.
+The file [``ts2-openapi-eudi-provider.json``](api/ts2-openapi-eudi-provider.json) contains the JSON-based [OpenAPI](https://spec.openapis.org/oas/latest.html)-specification of the API specified in [clause 3](#3-notification-system) above.
 
 ### A.3 XML-Schema (informative)
 
-The file [``EUDI-Provider.xsd``](api/ts2-eudi-provider.xsd) contains the XML-Schema definitions corresponding to the Data Model specified in [clause 2](#2-data-model) above.
+The file [``ts2-eudi-provider.xsd``](api/ts2-eudi-provider.xsd) contains the XML-Schema definitions corresponding to the Data Model specified in [clause 2](#2-data-model) above.

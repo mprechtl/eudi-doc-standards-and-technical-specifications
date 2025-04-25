@@ -1,13 +1,5 @@
 <?xml  version='1.0' encoding='utf-8' ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://data.europa.eu/eudi/model" targetNamespace="http://data.europa.eu/eudi/model" elementFormDefault="unqualified" attributeFormDefault="unqualified">
-	<xs:complexType name="Claim">
-		<xs:sequence>
-			<xs:element name="friendlyName" minOccurs="1" maxOccurs="1" type="xs:string"/>
-			<xs:element name="required" minOccurs="0" maxOccurs="1" type="xs:boolean"/>
-			<xs:element name="URI" minOccurs="1" maxOccurs="1" type="xs:string"/>
-			<xs:element name="isRequiredByLaw" minOccurs="1" maxOccurs="1" type="Law"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="Document">
 		<xs:sequence>
 			<xs:element name="content" minOccurs="1" maxOccurs="1" type="xs:string"/>
@@ -20,12 +12,8 @@
 			<xs:element name="type" minOccurs="1" maxOccurs="1" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="IntendedUse">
-		<xs:sequence>
-			<xs:element name="purpose" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
-			<xs:element name="requestableClaim" minOccurs="1" maxOccurs="unbounded" type=""/>
-		</xs:sequence>
-	</xs:complexType>
+	<xs:complexType name="Identifier"/>
+	<xs:complexType name="Law"/>
 	<xs:complexType name="Law">
 		<xs:sequence>
 			<xs:element name="lang" minOccurs="1" maxOccurs="1" type="xs:string"/>
@@ -39,31 +27,27 @@
 			<xs:element name="infoURI" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
 			<xs:element name="phone" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
 			<xs:element name="postalAddress" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
+			<xs:element name="identifier" minOccurs="0" maxOccurs="unbounded" type="Identifier"/>
+			<xs:element name="is identified by" type="Identifier"/>
 			<xs:element name="legalPerson" minOccurs="0" maxOccurs="1" type="LegalEntity"/>
+			<xs:element name="may be" type="LegalPerson"/>
 			<xs:element name="naturalPerson" minOccurs="0" maxOccurs="1" type="NaturalPerson"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="LegalPerson">
-		<xs:complexContent>
-			<xs:extension base="LegalEntity">
-				<xs:sequence>
-					<xs:element name="legalName" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
-					<xs:element name="establishedByLaw" minOccurs="0" maxOccurs="unbounded" type="Law"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="legalName" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
+			<xs:element name="establishedByLaw" minOccurs="0" maxOccurs="unbounded" type="Law"/>
+			<xs:element name="is established by" type="Law"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="NaturalPerson">
-		<xs:complexContent>
-			<xs:extension base="LegalEntity">
-				<xs:sequence>
-					<xs:element name="dateOfBirth" minOccurs="0" maxOccurs="1" type="xs:string"/>
-					<xs:element name="familyName" minOccurs="1" maxOccurs="1" type="xs:string"/>
-					<xs:element name="givenName" minOccurs="1" maxOccurs="1" type="xs:string"/>
-					<xs:element name="placeOfBirth" minOccurs="0" maxOccurs="1" type="xs:string"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="dateOfBirth" minOccurs="0" maxOccurs="1" type="xs:string"/>
+			<xs:element name="familyName" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="givenName" minOccurs="1" maxOccurs="1" type="xs:string"/>
+			<xs:element name="placeOfBirth" minOccurs="0" maxOccurs="1" type="xs:string"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PIDProvider">
 		<xs:complexContent>
@@ -82,6 +66,7 @@
 	</xs:complexType>
 	<xs:complexType name="Provider">
 		<xs:sequence>
+			<xs:element name="providerType" minOccurs="1" maxOccurs="1" type="xs:integer"/>
 			<xs:element name="x5c" minOccurs="0" maxOccurs="1" type="xs:string"/>
 			<xs:element name="policy" minOccurs="0" maxOccurs="unbounded" type="Policy"/>
 		</xs:sequence>
@@ -111,6 +96,7 @@
 		<xs:complexContent>
 			<xs:extension base="Provider">
 				<xs:sequence>
+					<xs:element name="provides" type="TrustService"/>
 					<xs:element name="trustSrv" minOccurs="1" maxOccurs="unbounded" type="TrustService"/>
 				</xs:sequence>
 			</xs:extension>
@@ -118,7 +104,12 @@
 	</xs:complexType>
 	<xs:complexType name="WRPAccCertProvider">
 		<xs:complexContent>
-			<xs:extension base="TrustServiceProvider"/>
+			<xs:extension base="Provider">
+				<xs:sequence>
+					<xs:element name="provides" type="TrustService"/>
+					<xs:element name="trustSrv" minOccurs="1" maxOccurs="unbounded" type="TrustService"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="WRPRegistrar">
@@ -136,21 +127,6 @@
 			<xs:extension base="Provider">
 				<xs:sequence>
 					<xs:element name="walletSol" minOccurs="0" maxOccurs="1" type="WalletSolution"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="WalletRelyingParty">
-		<xs:complexContent>
-			<xs:extension base="Provider">
-				<xs:sequence>
-					<xs:element name="entitlement" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
-					<xs:element name="isPSB" minOccurs="1" maxOccurs="1" type="xs:boolean"/>
-					<xs:element name="srvDescription" minOccurs="1" maxOccurs="1" type="xs:string"/>
-					<xs:element name="supportURI" minOccurs="0" maxOccurs="1" type="xs:string"/>
-					<xs:element name="tradeName" minOccurs="0" maxOccurs="1" type="xs:string"/>
-					<xs:element name="intendedUse" minOccurs="1" maxOccurs="unbounded" type="IntendedUse"/>
-					<xs:element name="supervisoryBody" minOccurs="1" maxOccurs="1" type="LegalEntity"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
