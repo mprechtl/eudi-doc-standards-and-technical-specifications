@@ -10,12 +10,13 @@ The present document specifies the technical specification and requirements for 
 
 ## Versioning
 
-| Version | Date       | Description                                                                           | 
-|---------|------------|---------------------------------------------------------------------------------------|
-| `0.1`   | 20.01.2025 | Initial version for discussion                                               | 
-| `0.2`   | 18.02.2025 | Version with first internal feedback and improved scoping  | 
-| `0.3`   | 03.03.2025 | Version for public discussion with the Member States   |
+| Version | Date       | Description                                                                |
+|---------|------------|----------------------------------------------------------------------------|
+| `0.1`   | 20.01.2025 | Initial version for discussion                                             |
+| `0.2`   | 18.02.2025 | Version with first internal feedback and improved scoping                  |
+| `0.3`   | 03.03.2025 | Version for public discussion with the Member States                       |
 | `0.4`   | 03.04.2025 | Updated version based on discussions in 1st and 2nd focus group meetings   |
+| `1.0`   | 25.04.2025 | Final version (v1.0)                                                       |
 
 ## 1 Introduction and Overview
 
@@ -135,7 +136,7 @@ The EUDI Wallet Trust Mark functionality related requirements are presented in t
 
 **EWTM-U9**: As a user of a EUDI Wallet, I want guidance on the EUDI Wallet on how to act if my EUDI Wallet Unit has been revoked.
 
-> Note: Guidelines on how to deal with non-operational app are easiest found from the app itself. The actual realisation may be part of the guidelines material to be created and provided by the European Commission.
+> Note: Guidelines on how to deal with non-functioning app are easiest found from the app itself. The actual realisation may be part of the guidelines material to be created and provided by the European Commission.
 
 **EWTM-U10**: As a physically impaired User of a EUDI Wallet, I want to have accessibility support within realisation of the requirements set in **EWTM-U4** - **EWTM-9**.
 
@@ -215,7 +216,7 @@ The data object _WalletTrustMarkInformation_ contents are defined in Table 1. Th
 | ListOfCerfifiedWalletsQRCode |  QR Code containing the information of ListOfCertifiedWalletsURL | ISO-8859-1 Byte mode QR code | Optional |
 | WalletSolutionInfoPageURL    | URL to the certified Wallet Solution's own information page under the list of certified EUDI Wallet Solutions page. Constructed from the ListOfCertifiedWalletsURL URL appended with a '?'+ the WalletSolutionID Identifier of the Wallet Solution. *Note: This allows, as necessary, a direct search query from the Wallet user interface to open the individual Wallet Solution page from the list behind the top level of certified Wallets list page*. | URL | Mandatory |
 | WalletSolutionInfoPageQRCode |  QR Code containing the information of WalletSolutionInfoPageURL | ISO-8859-1 Byte mode QR code | Optional  |
-| WalletVerifierToolURL* | URL pointing to the official EUDI Wallet Verification Tool's (Attestation Provider Service) _/.well-known/openid-credential-issuer_ endpoint used for retrieval of the attestation provider metadata. | URL  | Optional |
+| WalletVerifierToolURL* | URL pointing to the official EUDI Wallet Verification Tool's (an Attestation Provider Service) _/.well-known/openid-credential-issuer_ endpoint used for retrieval of the attestation provider metadata. | URL  | Optional |
 
 #### 4.1.1. TrustMarkResource object
 
@@ -308,6 +309,6 @@ The WUA issuance (12) by the Wallet Provider happens at Wallet Unit activation a
 | Reference      | Description |
 |----------------------------------------|----------------------------------------------|
 | [WCAG 2.1 ]                            | [Web Content Accessibility Guide\sion 2.1](https://www.w3.org/TR/WCAG21/) |
-| [Issuance WUA Specification]           | [Specification of Wallet Unit Attestations (WUA) used in issuance of PID and Attestations](Link TBA)                                     |
+| [Issuance WUA Specification]           | [Specification of Wallet Unit Attestations (WUA) used in issuance of PID and Attestations](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/blob/main/docs/technical-specifications/ts3-wallet-unit-attestation.md)                                     |
 |  [OpenID4VCI]                          | [OpenID For Verifiable Credential Issuance v1.0](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)  |
 
