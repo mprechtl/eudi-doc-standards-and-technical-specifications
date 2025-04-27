@@ -310,5 +310,5 @@ The WUA issuance (12) by the Wallet Provider happens at Wallet Unit activation a
 |----------------------------------------|----------------------------------------------|
 | [WCAG 2.1 ]                            | [Web Content Accessibility Guide\sion 2.1](https://www.w3.org/TR/WCAG21/) |
 | [Issuance WUA Specification]           | [Specification of Wallet Unit Attestations (WUA) used in issuance of PID and Attestations](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/blob/main/docs/technical-specifications/ts3-wallet-unit-attestation.md)                                     |
-|  [OpenID4VCI]                          | [OpenID For Verifiable Credential Issuance v1.0](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html)  |
+|  [OpenID4VCI]                          | [OpenID For Verifiable Credential Issuance v1.0](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/3)  |
 
