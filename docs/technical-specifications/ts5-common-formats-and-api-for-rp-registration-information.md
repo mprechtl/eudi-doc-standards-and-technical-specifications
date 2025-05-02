@@ -13,7 +13,7 @@ The present document specifies the data formats and application programming inte
 | Version | Date        | Description                                               |
 |---------|-------------|-----------------------------------------------------------|
 | `0.1`   | 25.04.2025  | Initial version for first discussion                      |
-
+| `0.2`   | 30.04.2025  | Initial version - fixed data model figure                 |
 
 ## 1. Introduction and Overview
 
@@ -42,12 +42,12 @@ For the purposes of defining the technical specification, the [CIR for Relying P
 
 ## 2. Data Model
 
-The data model (**Editorial comment: and common format?**) for Relying Party Registration is derived from the [CIR for Relying Party Registration], the [Common Set of Relying Party Information to be Registered](**TS6 public link TBA**) technical specification and the [Provider information specification], 
+The data model and common format for Relying Party Registration is derived from the [CIR for Relying Party Registration], the [Common Set of Relying Party Information to be Registered](**TS6 public link TBA**) technical specification and the [Provider information specification], 
 while keeping the [SEMIC Style Guide](https://semiceu.github.io/style-guide/1.0.0/index.html) in mind and aligning it with the [SEMIC Core Business Vocabulary](https://semiceu.github.io/Core-Business-Vocabulary/releases/2.2.0/) as much as reasonable. 
 
 > NOTE: The data model for Relying Party Registration data depends on the [Provider information specification] data model, to which it carries a few superclass dependencies as referenced in this section.
 
-![WRP-DataModel](img/ts5-wrp-data-model.svg)
+![WRP-Reg-DataModel](img/ts5-wrpreg-datamodel.svg)
 
 As outlined in the figure, the data model contains the main class **WalletRelyingParty**, which has class dependencies to superclasses **LegalEntity** and **Provider** specified in [Provider information specification]. 
 
