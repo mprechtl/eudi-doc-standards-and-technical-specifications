@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+  title: EUDI Wallet Relying Party Registrar API # A sample title
+  version: v1 # Please provide the API version
+servers:
+  - url: https://example.com/registrar # Please provide applicable URL
+components:
+  schemas:
+    WalletRelyingParty:
+      $ref: '#/components/schemas/WalletRelyingPartySchema'
+    Claim:
+      type: object
+      properties:
+        path:
+          type: string
+        values:
+          type: string     
+    Credential:
+      type: object
+      properties:
+        format:
+          type: string
+        meta:
+          type: string
+        claim:
+          type: array
+          items:
+            $ref: '#/components/schemas/Claim'
+          minItems: 0
+    Identifier:
+      type: object
+      properties:
+        identifier:
+          type: string
+        type:
+          type: string
+    IntendedUse:
+      type: object
+      properties:
+        purpose:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiLangString'
+          minItems: 1
+        privacyPolicy:
+          $ref: '#/components/schemas/Policy'
+        createdAt:
+          type: string
+        revokedAt:
+          type: string
+          minItems: 0
+        credential:
+          type: array
+          items:
+            $ref: '#/components/schemas/Credential'
+          minItems: 1
+    Law:
+      type: object
+      properties:
+        lang:
+          type: string
+        legalBasis:
+          type: string
+    LegalEntity:
+      type: object
+      properties:
+        country:
+          type: string
+        email:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        identifier:
+          type: array
+          items:
+            $ref: '#/components/schemas/Identifier'
+          minItems: 0
+        infoURI:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        legalPerson:
+          $ref: '#/components/schemas/LegalEntity'
+        may be:
+          type: array
+          items:
+            $ref: '#/components/schemas/LegalPerson'
+        naturalPerson:
+          $ref: '#/components/schemas/NaturalPerson'
+        phone:
+          type: array
+          items:
+            type: string
+          minItems: 0
+        postalAddress:
+          type: array
+          items:
+            type: string
+          minItems: 0
+    LegalPerson:
+      type: object
+      properties:
+        establishedByLaw:
+          type: array
+          items:
+            $ref: '#/components/schemas/Law'
+          minItems: 0
+        legalName:
+          type: array
+          items:
+            type: string
+          minItems: 1
+    MultiLangString:
+      type: object
+      properties:
+        lang:
+          type: string
+        content:
+          type: string 
+    NaturalPerson:
+      type: object
+      properties:
+        dateOfBirth:
+          type: string
+        familyName:
+          type: string
+        givenName:
+          type: string
+        placeOfBirth:
+          type: string
+    Policy:
+      type: object
+      properties:
+        policyURI:
+          type: string
+        type:
+          type: string
+    Provider:
+      type: object
+      properties:
+        policy:
+          type: array
+          items:
+            $ref: '#/components/schemas/Policy'
+          minItems: 0
+        providerType:
+          type: integer
+        x5c:
+          type: string
+    WalletRelyingPartySchema:
+      allOf:
+        - $ref: '#/components/schemas/Provider'
+        - type: object
+          properties:
+            entitlement:
+              type: array
+              items:
+                type: string
+              minItems: 1
+            intendedUse:
+              type: array
+              items:
+                $ref: '#/components/schemas/IntendedUse'
+              minItems: 1
+            isPSB:
+              type: boolean
+            providesAttestations:
+              $ref: '#/components/schemas/Credential'
+            srvDescription:
+              type: string
+            supervisoryAuthority:
+              $ref: '#/components/schemas/LegalEntity'
+            supportURI:
+              type: string
+            tradeName:
+              type: string
+            usesIntermediary:
+              type: array
+              items:
+                $ref: '#/components/schemas/WalletRelyingParty'
+              minItems: 0
+            isIntermediary:
+              type: boolean
+paths:
+  /wrp:
+    post:
+      summary: Create a new Wallet Relying Party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletRelyingParty'
+      responses:
+        '201':
+          description: Successfully created Wallet Relying Party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletRelyingParty'
+        '400':
+          description: Invalid request payload
+    put:
+      summary: Update an existing Wallet Relying Party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletRelyingParty'
+      responses:
+        '200':
+          description: Successfully updated Wallet Relying Party
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletRelyingParty'
+        '400':
+          description: Invalid request payload
+        '404':
+          description: Wallet Relying Party not found
+    delete:
+      summary: Delete a Wallet Relying Party by identifier
+      parameters:
+        - in: path
+          name: identifier
+          required: true
+          schema:
+            type: string
+          description: The identifier of the Wallet Relying Party to delete
+      responses:
+        '204':
+          description: Wallet Relying Party successfully deleted
+        '404':
+          description: Wallet Relying Party not found      
+    get:
+      summary: Get a list of Wallet Relying Parties (with optional filtering)
+      parameters:
+        - in: query
+          name: identifier
+          schema:
+            type: string
+          description: Filter by identifier
+        - in: query
+          name: legalname
+          schema:
+            type: string
+          description: Filter by legal name
+        - in: query
+          name: tradename
+          schema:
+            type: string
+          description: Filter by trade name
+        - in: query
+          name: policy
+          schema:
+            type: string
+          description: Filter by policy URI or type
+        - in: query
+          name: entitlement
+          schema:
+            type: string
+          description: Filter by entitlement
+        - in: query
+          name: credentialmeta
+          schema:
+            type: string
+          description: Filter by the contents of 'meta' attribute of a Credential
+        - in: query
+          name: credentialformat
+          schema:
+            type: string
+          description: Additional filter to narrow down 'Meta' matches with matching also the 'format' attribute
+        - in: query
+          name: usesintermediary
+          schema:
+            type: string
+          description: Filter by intermediary identifier
+        - in: query
+          name: isintermediary
+          schema:
+            type: boolean
+          description: Filter by intermediary status (true/false)
+      responses:
+        '200':
+          description: List of matching Wallet Relying Parties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WalletRelyingParty'
