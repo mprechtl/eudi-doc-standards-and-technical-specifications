@@ -242,7 +242,7 @@ paths:
         '404':
           description: Wallet Relying Party not found      
     get:
-      summary: Get a list of Wallet Relying Parties (with optional filtering)
+      summary: Get a list of Wallet Relying Parties (with optional filtering and pagination)
       parameters:
         - in: query
           name: identifier
@@ -289,6 +289,21 @@ paths:
           schema:
             type: boolean
           description: Filter by intermediary status (true/false)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+            maximum: 100
+          description: Maximum number of items to return per page.
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+          description: Number of items to skip before starting to return results.
       responses:
         '200':
           description: List of matching Wallet Relying Parties
@@ -298,3 +313,5 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/WalletRelyingParty'
+        '400':
+          description: Invalid pagination parameters (e.g., limit/offset out of range)
