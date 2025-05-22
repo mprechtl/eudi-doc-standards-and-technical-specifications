@@ -15,6 +15,7 @@ The present document specifies the data formats and application programming inte
 | `0.1`   | 25.04.2025  | Initial version for first discussion                      |
 | `0.2`   | 30.04.2025  | Initial version - fixed data model figure                 |
 | `0.3`   | 13.05.2025  | Updated version based on first feedback round             |
+| `0.4`   | 23.05.2025  | Updated version based on focus group meeting 2 .          |
 
 ## 1. Introduction and Overview
 

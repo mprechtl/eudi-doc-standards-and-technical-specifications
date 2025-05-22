@@ -101,9 +101,21 @@
                 <xsd:sequence>
                     <xsd:element name="entitlement" type="tns:ArrayOfString" minOccurs="1"/>
                     <xsd:element name="intendedUse" type="tns:ArrayOfIntendedUse" minOccurs="1"/>
-                    <xsd:element name="isPSB" type="xsd:boolean" minOccurs="0"/>
+                    <xsd:element name="isPSB" type="xsd:boolean" minOccurs="1"/>
                     <xsd:element name="providesAttestations" type="tns:Credential" minOccurs="0"/>
-                    <xsd:element name="srvDescription" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="srvDescription" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="descriptionSet" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="localizedString" type="tns:MultiLangString" minOccurs="1" maxOccurs="unbounded"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
                     <xsd:element name="supervisoryAuthority" type="tns:LegalEntity" minOccurs="0"/>
                     <xsd:element name="supportURI" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="tradeName" type="xsd:string" minOccurs="0"/>

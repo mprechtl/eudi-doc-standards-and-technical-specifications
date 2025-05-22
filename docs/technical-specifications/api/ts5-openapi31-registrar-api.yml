@@ -166,10 +166,16 @@ components:
               minItems: 1
             isPSB:
               type: boolean
+              minItems: 1
             providesAttestations:
               $ref: '#/components/schemas/Credential'
             srvDescription:
-              type: string
+              type: array
+              items:
+                type: array
+                minItems: 1
+                items:
+                  $ref: '#/components/schemas/MultiLangString'
             supervisoryAuthority:
               $ref: '#/components/schemas/LegalEntity'
             supportURI:
