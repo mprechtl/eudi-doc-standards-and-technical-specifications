@@ -15,6 +15,8 @@ The present document specifies the technical specification and requirements for 
 | `0.1` | 03.04.2025 | Initial version for discussion |
 | `0.2` | 23.04.2025 | Updates based on first group meeting |
 | `0.3` | 02.05.2025 | Updates based on second group meeting |
+| `0.4` | 21.05.2025 | Final version |
+
 
 ## 1 Introduction and Overview
 This document provides a technical overview of existing Zero-Knowledge Proof (ZKP) 
@@ -110,7 +112,7 @@ have access to the private key of the Provider. Therefore two approaches are pro
 * The Relying Party asks the Provider to verify that *B'* equals to *A'* raised to
 its secret key. Because both numbers are randomized, the Provider cannot linked them
 back to User.
-* The Wallet Unit asks the Relying Party to verify *B'* equals to *A'*. This can be done
+* The Wallet Unit asks the Provider to verify *B'* equals to *A'*. This can be done
 in batch and at an earlier time. In order to preserve unlinkability, the Wallet Unit
 "blinds" these two numbers and the provider generates a proof based on the blinded
 values. This is achieved using Oblivious Issuance of Proofs [Orr2024].
@@ -138,7 +140,9 @@ key controlled by the Wallet Unit and stored securely within the associated WSCD
 Recent ZKP schemes enable the proof of possession of a secret key corresponding 
 to an ECDSA digital signature, along with a commitment to the associated public key.
 These schemes can be constructed using either Sigma protocols [Cel2024] or zkSNARKs
-[Woo2025]. By combining such a proof mechanism with BBS signatures, it 
+[Woo2025]. Furthermore, constructions such as [Cha2020] enable the generation of a proof
+that the committed public key is indeed included in an attestation. 
+By integrating those proof mechanisms with BBS signatures, it 
 becomes possibly to bind an attestation to a private key stored in a WSCD.
 
 #### 2.1.3.1 Issuance
@@ -148,25 +152,33 @@ including however in the list of signed message an ECDSA public key.
 #### 2.1.3.2 Presentation
 The Wallet Unit performs the steps described in section 2.1.1.2 making sure that
 the public key included in the list of messages is hidden. It then performs the
-following additional steps: it creates a commitment of the public key, it generates
-a proof that that the committed public key is the same as the (hidden) public
-key included in the attestation, it generates an ECDSA digital signature 
-of a fresh nonce using the
-device's WSCD, it generates a proof that signature can be verified using the 
-committed public key. 
+following additional steps: 
+* it creates a commitment of the public key
+* it generates a proof that that the committed public key is the same as the (hidden) public
+key included in the attestation (e.g., using [Cha2020])
+* it generates an ECDSA digital signature of a fresh nonce using the
+device's WSCD
+* it generates a proof that signature can be verified using the 
+committed public key (e.g., using [Cel2024] or [Woo2025]). 
 
 #### 2.1.3.3 Performance
 This approach introduces some additional overhead related to  proofs.
-[Cel2024] report proof size grater than 160kB, and proof generation and verification 
+[Cel2024] reports proof size greater than 160kB, and proof generation and verification 
 times over 610ms and 450ms respectively in a Macbook M1 with 8 GB of memory. [Woo2025]
 reports proof generation time 1.6msec. and proof verification time 1.7msec in a
 AMD Ryzen Threadripper 5995WX 1.8GHz CPU, 256 GBs RAM server. Similarly, [Woo2025]
-reports proof size equal to 406 bytes. 
+reports proof size equal to 406 bytes. Furthermore, older implementations report
+the performance of [Cha2020] to be around 1 sec. in a Samsung Fold smart phone and the 
+size of the proof to be over 100kb. 
 
 #### 2.1.3.4 Discussion
-Both of these approaches support proof-of-possession of an ECDSA private key. 
-However, both solutions require support for paring cryptography and pairing-friendly
-curves. Finally, these schemes still require standardization.   
+The combination of these approaches achieve proof-of-possession of an ECDSA private key
+for attestations signed using BBS signatures with pairings (hence support for paring 
+cryptography and pairing-friendly curves is required). Such a combination appears to
+be still work in progress: its feasibility, performance, 
+and security requires 
+further investigation.  Finally, these schemes still require standardization.   
+
 
 ## 2.2 Proofs for arithmetic circuits (programmable ZKPs)
 
@@ -254,7 +266,8 @@ of the setup parameters is 580MB and the size of a proof is 1019 bytes.
 #### 2.2.2.5 Discussion
 Crescent has better performance than Anonymous credentials from ECDSA solution however
 the trusted setup parameters create significant storage overhead. Moreover, some components
-of this solution are not standardized. 
+of this solution are not standardized. It is highlighted that Crescent relies on Groth16
+which relies on pairing-based cryptography. 
 
 Similarly, to anonymous credentials from ECDSA, Crescent does not require any change to the credential issuance
 process and it can be used with the attestation formats specified in [ISO/IEC 18013-5] or [SD-JWT VC].
@@ -276,6 +289,7 @@ and stored securely within the associated WSCD.
 | [BBS2004] | Boneh, Dan, Xavier Boyen, and Hovav Shacham. "Short group signatures." In Annual international cryptology conference, pp. 41-55. Berlin, Heidelberg: Springer Berlin Heidelberg, 2004. |
 | [Cel2024] | Sofia Celi, Shai Levin, and Joe Rowell, "CDLS: proving knowledge of committed discrete logarithms with soundness," Progress in Cryptology – AFRICACRYPT 2024 |
 | [Cha2020] | M Chase, T Perrin, G Zaverucha "The Signal Private Group System and Anonymous Credentials Supporting Efficient Verifiable Encryption." In ACM CCS 2020 |
+| [Cha2022] | M Chase, M. Orrù, T Perrin, G Zaverucha "Proofs of discrete logarithm equality across groups." Cryptology ePrint Archive, Paper 2022/1593, 2022, available at <https://eprint.iacr.org/2022/1593>  |
 | [ETSI\_119476] | ETSI TR 119 476 V1.2.1, Electronic Signatures and Trust  Infrastructures (ESI); Analysis of selective disclosure and zero-knowledge proofs applied to Electronic Attestation of Attributes |
 | [Fri2024] | Matteo Frigo and abhi shelat, Anonymous credentials from ECDSA, Cryptology ePrint Archive, Paper 2024/2010, 2024, available at <https://eprint.iacr.org/2024/2010> |
 | [Gro2016] | Jens Groth, “On the Size of Pairing-Based Non-Interactive Arguments”, in EUROCRYPT 2016 |
