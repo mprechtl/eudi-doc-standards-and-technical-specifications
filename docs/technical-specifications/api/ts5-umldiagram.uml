@@ -8,7 +8,7 @@ package "http://data.europa.eu/eudi/" {
     + intendedUse: IntendedUse[*]
     + isPSB: boolean
     + providesAttestations: Credential
-    + srvDescription: string
+    + srvDescription: MultiLangString[][*]
     + supervisoryAuthority: LegalEntity
     + supportURI: string
     + tradeName: string
