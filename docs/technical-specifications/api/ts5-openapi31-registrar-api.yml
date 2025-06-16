@@ -43,7 +43,10 @@ components:
             $ref: '#/components/schemas/MultiLangString'
           minItems: 1
         privacyPolicy:
-          $ref: '#/components/schemas/Policy'
+          type: array
+          items:
+            $ref: '#/components/schemas/Policy'
+            minItems: 1
         createdAt:
           type: string
         revokedAt:
