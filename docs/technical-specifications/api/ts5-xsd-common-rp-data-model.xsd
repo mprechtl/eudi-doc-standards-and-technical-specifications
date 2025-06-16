@@ -29,7 +29,7 @@
     <xsd:complexType name="IntendedUse">
         <xsd:sequence>
             <xsd:element name="purpose" type="tns:ArrayOfMultiLangString" minOccurs="1"/>
-            <xsd:element name="privacyPolicy" type="tns:Policy"/>
+            <xsd:element name="privacyPolicy" type="tns:ArrayOfPolicy" minOccurs="1"/>
             <xsd:element name="createdAt" type="xsd:string"/>
             <xsd:element name="revokedAt" type="xsd:string" minOccurs="0"/>
             <xsd:element name="credential" type="tns:ArrayOfCredential" minOccurs="1"/>
@@ -117,7 +117,7 @@
                         </xsd:complexType>
                     </xsd:element>
                     <xsd:element name="supervisoryAuthority" type="tns:LegalEntity" minOccurs="0"/>
-                    <xsd:element name="supportURI" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="supportURI" type="tns:ArrayOfString" minOccurs="1"/>
                     <xsd:element name="tradeName" type="xsd:string" minOccurs="0"/>
                     <xsd:element name="usesIntermediary" type="tns:ArrayOfWalletRelyingParty" minOccurs="0"/>
                     <xsd:element name="isIntermediary" type="xsd:boolean" minOccurs="0"/>

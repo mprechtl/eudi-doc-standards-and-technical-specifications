@@ -7,7 +7,7 @@ package "http://data.europa.eu/eudi/" {
     + entitlement: string[*]
     + intendedUse: IntendedUse[*]
     + isPSB: boolean
-    + providesAttestations: Credential
+    + providesAttestations: Credential[*]
     + srvDescription: MultiLangString[][*]
     + supervisoryAuthority: LegalEntity
     + supportURI: string
@@ -30,7 +30,7 @@ package "http://data.europa.eu/eudi/" {
 
   class IntendedUse {
     + purpose: MultiLangString[*]
-    + privacyPolicy: Policy
+    + privacyPolicy: Policy[*]
     + createdAt: string
     + revokedAt: string
     + credential: Credential[*]

@@ -15,7 +15,8 @@ The present document specifies the data formats and application programming inte
 | `0.1`   | 25.04.2025  | Initial version for first discussion                      |
 | `0.2`   | 30.04.2025  | Initial version - fixed data model figure                 |
 | `0.3`   | 13.05.2025  | Updated version based on first feedback round             |
-| `0.4`   | 23.05.2025  | Updated version based on focus group meeting 2 .          |
+| `0.4`   | 23.05.2025  | Updated version based on focus group meeting 2            |
+| `1.0`   | 13.06.2025  | Published version after Coordination Group review period  |
 
 ## 1. Introduction and Overview
 
@@ -69,19 +70,23 @@ The main class of the data model is **WalletRelyingParty**, which
   * **NaturalPerson**
   * **Law**
 
+The information present in the optionally issued Relying Party Registration Certificates (issuance of RPRC is one for each Intended use of the Wallet-Relying Party), specified in \[ETSI 119 475\], is gathered from these classes.
+
+> NOTE: A mapping of the data elements in the model versus the RPRC contents will be provided once the final 1.0.0 ETSI specification is released, along with an API method to receive the RPRC contents via the Registry API.
+
 ### 2.1 WalletRelyingParty
 
-The ``WalletRelyingParty`` main class inherits all attributes from the ``Provider``
-superclass specified in the [Provider information specification]. In addition to the attributes of the ``Provider`` class it contains the attributes specified in the following table:
+The `WalletRelyingParty` main class inherits all attributes from the `Provider`
+superclass specified in the [Provider information specification]. In addition to the attributes of the `Provider` class it contains the attributes specified in the following table:
 
 | Attribute              | Multiplicity | Type                                   | Description     |
 |------------------------|--------------|----------------------------------------|-----------------|
 | `tradeName`            | [0..1]       | *string*                               | may be present in order to specify the **trade name** (common name, service name) of the Wallet-Relying Party, if applicable.           |
-| `supportURI`           | [0..1]       | *string*                               | specifies the **support URI** for the service provided by the Wallet-Relying Party, if applicable. Note that Annex I (7) of [CIR for Relying Party Registration](https://TBA) stipulates that the Wallet-Relying Party shall provide detailed contact information in form of (a) a website for helpdesk and support, (b) a phone number or (c) an e-mail address pertaining to its registration and intended use of the Wallet Units. |
+| `supportURI`           | [1..*]       | *string*                               | specifies the **support URI** for the service provided by the Wallet-Relying Party, mandatory at least for the purpose of sending  the Wallet-Relying Party a data deletion request according to the requirements set in the [Specification of Common Interface for Data Deletion Requests]. Note that Annex I (7) of [CIR for Relying Party Registration](https://TBA) stipulates that the Wallet-Relying Party shall provide detailed contact information in form of (a) a website for helpdesk and support, (b) a phone number or (c) an e-mail address pertaining to its registration and intended use of the Wallet Units. |
 | `srvDescription`       | [1..*]       | Array of *[MultiLangString](#245-multilangstring) objects*                      | contains an array of arrays with localised **descriptions of the services provided by the Wallet-Relying Party**.                              |
 | `intendedUse`          | [0..*]       | [*IntendedUse*](#243-intendeduse)      | may appear one or more times in order to specify intended use cases in which the Wallet-Relying Party intends to rely on attestations of attributes of a Wallet User presented by a Wallet Unit. `IntendedUse` is **not required** from Wallet-Relying Parties that register only to act as an intermediary.                                    |
 | `isPSB`                | [1..1]       | *boolean*                              | indicates whether the Wallet-Relying Party **is a public sector body** or not. The attribute SHALL be provided and be set to `FALSE` if registered entity is not a public sector body.                       |
-| `entitlement`          | [1..*]       | *string*                               | specifies the **set of entitlements** of the Wallet-Relying Party in form of a URI according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html), whereas the following URIs are defined in the present document: <ul><li> http://data.europa.eu/eudi/entitlement/Service_Provider</li> <li> http://data.europa.eu/eudi/entitlement/QEAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/Non_Q_EAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/PUB_EAA_Provider</li><li> http://data.europa.eu/eudi/entitlement/PID_Provider</li><li> http://data.europa.eu/eudi/entitlement/QCert_for_ESeal_Provider</li><li> http://data.europa.eu/eudi/entitlement/QCert_for_ESig_Provider</li><li> http://data.europa.eu/eudi/entitlement/rQSealCDs_Provider</li><li> http://data.europa.eu/eudi/entitlement/rQSigCDs_Provider</li><li> http://data.europa.eu/eudi/entitlement/ESig_ESeal_Creation_Provider</li></ul>     |
+| `entitlement`          | [1..*]       | *string*                               | specifies the **set of entitlements** of the Wallet-Relying Party in form of a URI according to [RFC3986](https://www.rfc-editor.org/rfc/rfc3986.html). The following URIs are specified for the roles present in the [CIR for Relying Party Registration]: <ul><li> https://uri.etsi.org/19475/Entitlement/Service_Provider</li> <li> https://uri.etsi.org/19475/Entitlement/QEAA_Provider</li><li> https://uri.etsi.org/19475/Entitlement/Non_Q_EAA_Provider</li><li> https://uri.etsi.org/19475/Entitlement/PUB_EAA_Provider</li><li> https://uri.etsi.org/19475/Entitlement/PID_Provider</li><li> https://uri.etsi.org/19475/Entitlement/QCert_for_ESeal_Provider</li><li> https://uri.etsi.org/19475/Entitlement/QCert_for_ESig_Provider</li><li> https://uri.etsi.org/19475/Entitlement/rQSealCDs_Provider</li><li> https://uri.etsi.org/19475/Entitlement/rQSigCDs_Provider</li><li> https://uri.etsi.org/19475/Entitlement/ESig_ESeal_Creation_Provider</li></ul>     |
 | `providesAttestations` | [0..*]       | [*Credential*](#244-credential)        | specifies the **set of sub-entitlements** of the Wallet-Relying Party (See [CIR for Relying Party Registration] Annex I (13)). Shall be present only if any `entitlement` of the Wallet-Relying Party is of type QEAA_Provider, Non_Q_EAA_Provider, PUB_EAA_Provider or PID_Provider, listing the attestation type(s) (`Credential`) the Wallet-Relying Party intends to issue to Wallet Units.     |
 | `supervisoryAuthority` | [1..1]       | [*LegalEntity*](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/blob/main/docs/technical-specifications/ts2-notification-publication-provider-information.md#21-legalentity) | specifies the competent **data protection supervisory authority** according to Article 51 of [(EU) 2016/679](http://data.europa.eu/eli/reg/2016/679/oj) in charge of supervising the Wallet-Relying Party. It provides the necessary contact information towards the Data Protection Authority through its `email`, `phone` and/or `infoURI` attributes, of which at least one SHALL be provided for an DPA registered into a Member State Registry.         |
 | `usesIntermediary`     | [0..*]       | [*WalletRelyingParty*](#21-walletrelyingparty)                 | if present, indicates **whether the Wallet-Relying Party depends on use of at least one intermediary** and lists the needed information (`WalletRelyingParty.identifier` and `WalletRelyingParty.tradeName`) of the intermediaries the registered Wallet-Relying Party depends on. See [ARF Topic 52](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-2/annex-2-high-level-requirements.md#a2352-topic-52-relying-party-intermediaries), high-level requirements RPI_01 and RPI_07.             |
@@ -91,18 +96,18 @@ superclass specified in the [Provider information specification]. In addition to
 
 ### 2.2 Provider
 
-The ``Provider`` superclass inherits all attributes from the more general ``LegalEntity`` superclass specified in the [Provider information specification]. WalletRelyingParty class inherits all attributes of this class.
+The `Provider` superclass inherits all attributes from the more general `LegalEntity` superclass specified in the [Provider information specification]. WalletRelyingParty class inherits all attributes of this class.
 
 ### 2.3 LegalEntity
 
-The ``LegalEntity`` superclass contains the attributes specified in [Provider information specification]. WalletRelyingParty class inherits all attributes of this class.
+The `LegalEntity` superclass contains the attributes specified in [Provider information specification]. WalletRelyingParty class inherits all attributes of this class.
 
 ### 2.4 Auxiliary Classes
 
 The WalletRelyingParty class has attributes that depend on a set of its own auxiliary classes (in addition to ones defined in [Provider information specification] as listed in Section 2 above) as follows:
 
 ### 2.4.1 Claim
-The ``Claim`` class is used within the definition of the [``Credential``](#244-credential) class to list required attributes within a requested attestation, and contains the following attributes:
+The `Claim` class is used within the definition of the [`Credential`](#244-credential) class to list required attributes within a requested attestation, and contains the following attributes:
 
 | Attribute                 | Multiplicity | Type                   | Description                           |
 |---------------------------|--------------|------------------------|---------------------------------------|
@@ -110,7 +115,7 @@ The ``Claim`` class is used within the definition of the [``Credential``](#244-c
 | `values`                  | [0..1]       | *string*               | An array of strings, integers or boolean values that specifies the expected values of the claim. See [OpenID4VP] Sections 6.3. and 6.4.1.                    |
 
 ### 2.4.2 Identifier (external)
-The ``Identifier`` class is used within the definition of the ``LegalEntity`` superclass and contains the attributes specified in the [Provider information specification].
+The `Identifier` class is used within the definition of the `LegalEntity` superclass and contains the attributes specified in the [Provider information specification].
 
 #### 2.4.2.1 Unique Identifier for identification of Wallet-Relying Parties
 
@@ -130,21 +135,21 @@ Other alternate identifiers listed in [CIR for Relying Party Registration] Annex
 
 #### 2.4.3 IntendedUse
 
-The ``IntendedUse`` class is used within the definition of the [``WalletRelyingParty``](#21-walletrelyingparty) class to specify the required information when a Wallet-Relying Party is requesting data from a Wallet Unit. For legal reference see [CIR for Relying Party Registration] Annex I paragraphs (8), (9) and (10).
+The `IntendedUse` class is used within the definition of the [`WalletRelyingParty`](#21-walletrelyingparty) class to specify the required information when a Wallet-Relying Party is requesting data from a Wallet Unit. For legal reference see [CIR for Relying Party Registration] Annex I paragraphs (8), (9) and (10).
 
 The class contains the attributes specified in the following table:
 
 | Attribute                 | Multiplicity | Type                   | Description                           |
 |---------------------------|--------------|------------------------|---------------------------------------|
 | `purpose`                 | [1..*]       | [*MultiLangString*](#245-multilangstring)      | specifies one or more **purposes** of the intended data processing according to Article 5 1. (b) of [(EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj). The purpose SHALL be possible to be displayed localised to the User's language (`lang`), and localisations (`content`) SHALL be provided for all official languages of Member States where the intended use is provided. The localisation SHALL be provided in accordance with Annex E of [ETSI TS119612 V2.3.1](https://www.etsi.org/deliver/etsi_ts/119600_119699/119612/02.03.01_60/ts_119612v020301p.pdf).           |
-| `privacyPolicy`           | [1..1]       | [*Policy*](#246-policy) | specifies the privacy policy of the intended use. `Policy.type` SHALL be of type Privacy Statement. The privacy policy SHALL be possible to be displayed localised to the User's language (locale), and localisations SHALL be provided for all official languages of Member States where the intended use is provided. The localisation SHALL be provided in accordance with Annex E of [ETSI TS119612 V2.3.1](https://www.etsi.org/deliver/etsi_ts/119600_119699/119612/02.03.01_60/ts_119612v020301p.pdf).             |
+| `privacyPolicy`           | [1..*]       | [*Policy*](#246-policy) | specifies the privacy policy of the intended use. `Policy.type` SHALL be of type Privacy Statement. The privacy policy SHALL be possible to be displayed localised to the User's language (locale), and localisations SHALL be provided for all official languages of Member States where the intended use is provided. The localisation, if provided through listing individual URIs for each policy language version and if intended for rendering on the EUDI Wallet Instance, SHOULD be provided in accordance with Annex E of [ETSI TS119612 V2.3.1](https://www.etsi.org/deliver/etsi_ts/119600_119699/119612/02.03.01_60/ts_119612v020301p.pdf).   *NOTE: Localisations can be arranged on the Wallet-Relying Parties with multiple approaches, using Content Management Systems (CMSs), individual web pages per language variant of the policy with User locale based redirection from the policy root page, or by using commonly available internationalisation libraries on the front-end implementation. Two last approaches would work with just one privacyPolicy URI registration.*          |
 | `createdAt`                   | [1..1]       | *string* | Validity start date for the intended use in [ISO8601‑1] YYYY-MM-DD format.      |
 | `revokedAt`                   | [0..1]       | *string* | End date for the validity of the intended use in[ISO8601‑1] YYYY-MM-DD format. The intended use MAY be marked to expire at given date, or MAY be revoked by the Wallet-Relying Party as necessary.  Note that the [CIR for Relying Party Registration] requires expired or revoked intended use data be available beyond the validity lifespan of the intended use, during which it is used in validation of presentation requests.     |
 | `credential`              | [1..*]       | [*Credential*](#244-credential) | specifies the set of potentially **requestable attestations** which may be requested by the Wallet-Relying Party within the scope of the present intended use of data.      |
 
 #### 2.4.4 Credential
 
-The ``Credential`` class is used within the definition of the [``IntendedUse``](#243-intendeduse) class to specify the individual attestation specific information within a presentation request or upon issuance of the attestation.
+The `Credential` class is used within the definition of the [`IntendedUse`](#243-intendeduse) class to specify the individual attestation specific information within a presentation request or upon issuance of the attestation.
 
 | Attribute                 | Multiplicity | Type                   | Description                           |
 |---------------------------|--------------|------------------------|---------------------------------------|
@@ -156,7 +161,7 @@ The ``Credential`` class is used within the definition of the [``IntendedUse``](
 
 #### 2.4.5 MultiLangString
 
-The ``MultiLangString`` class is used within the definition of the [``IntendedUse``](#243-intendeduse) class to provide the country code  and string tuple in each localisation of the intended use's `purpose` attribute array. The codes and strings shall be provided according to the rules set in Annex E of \[ETSI TS 119 612\].
+The `MultiLangString` class is used within the definition of the [`IntendedUse`](#243-intendeduse) class to provide the country code  and string tuple in localisation of the intended use's `purpose` attribute array, and within the definition of the [`WalletRelyingParty`](#21-walletrelyingparty) class to provide the country code and string tuple in localisation of the Wallet-Relying Party's `serviceDescription` attribute array. The codes and strings shall be provided according to the rules set in Annex E of \[ETSI TS 119 612\].
 
 | Attribute                 | Multiplicity | Type                   | Description                           |
 |---------------------------|--------------|------------------------|---------------------------------------|
@@ -165,19 +170,19 @@ The ``MultiLangString`` class is used within the definition of the [``IntendedUs
 
 #### 2.4.6 Policy (external)
 
-The ``Policy`` class is used within the definition of the  [``IntendedUse``](#243-intendeduse)class. It contains the attributes specified in the [Provider information specification].
+The `Policy` class is used within the definition of the  [`IntendedUse`](#243-intendeduse)class. It contains the attributes specified in the [Provider information specification].
 
 #### 2.4.7 LegalPerson (external)
 
-The ``LegalPerson`` class is used within the definition of the ``LegalEntity`` class and allows to specify the attributes of a legal person. It contains the attributes specified in the [Provider information specification].
+The `LegalPerson` class is used within the definition of the `LegalEntity` class and allows to specify the attributes of a legal person. It contains the attributes specified in the [Provider information specification].
 
 #### 2.4.8 NaturalPerson (external)
 
-The ``NaturalPerson`` class is used within the definition of the ``LegalEntity`` class and allows to specify the attributes of a natural person acting as a legal entity. It contains the attributes specified in the [Provider information specification]. If an identifier of a natural person needs to be registered upon registration of a Wallet-Relying Party, the `identifier` of the `Provider` class SHALL be used for this purpose, using the `serialNumber` type as defined in [ETSI EN 319 412-1].
+The `NaturalPerson` class is used within the definition of the `LegalEntity` class and allows to specify the attributes of a natural person acting as a legal entity. It contains the attributes specified in the [Provider information specification]. If an identifier of a natural person needs to be registered upon registration of a Wallet-Relying Party, the `identifier` of the `Provider` class SHALL be used for this purpose, using the `serialNumber` type as defined in [ETSI EN 319 412-1].
  
 #### 2.4.9 Law (external)
 
-The ``Law`` class is used within the definition of the ``LegalPerson`` class and contains the attributes specified in the [Provider information specification].
+The `Law` class is used within the definition of the `LegalPerson` class and contains the attributes specified in the [Provider information specification].
 
 
 ## 3 Common Application Programming Interface
@@ -270,6 +275,31 @@ A dedicated check endpoint for allowing a highly specialised endpoint for making
 
 The OpenAPI 3.1 compatible REST API methods for the above are provided in Annex A.2
 
+#### 3.2.3 Protection against DDOS attacks and accidental overuse of the GET methods
+
+The API implementation SHALL take into consideration the vulnerabilities that an open, comprehensive query interface enables for both malicious or non-malicious users of the interface. First well-known vulnerability is sensitivity for Distributed Denial-of-Service (DDoS) attacks, the other valid one especially for the GET/wrp endpoint is the server load that very complex query parameter combinations from badly planned or non-intended/accidental misuse of the query mechanism can cause at the Registrar's server-side solution.
+
+##### DDoS attack protection guidelines
+
+Following policy/recommendation SHOULD be implemented (with solution-fitted combinations) in the national Registry API implementations to protect the API from DDoS attacks:
+
+* Use of **a Cloud-based DDoS Protection Service/CDN** as the best first line of defense for volumetric attacks.
+* Use of an **API Gateway or Load Balancer with Rate Limiting** is crucial for fight against application-layer attacks targeting the API.
+* Deploy a **Web Application Firewall (WAF)** to protect against other application-layer threats and to complement rate limiting.
+* Ensure your infrastructure is scalable by using e.g. **Load Balancers** to handle legitimate bursts and some attack traffic.
+* Utilise **Caching** heavily for the GET endpoints to reduce backend load - many responses might be static or change infrequently, and caching the responses at the CDN, load balancer or application level means the API logic and database will receive less requests.
+* Have robust **API monitoring** for request rates, latency, error rates, server resource utilisation and source IP addresses with proper alerting in place.
+* Utilise **network segmentation** - e.g., isolate the API servers in a private subnet behind the WAF, and from the actual Registrar database to improve robustness of your network architecture against hostile attacks.
+
+##### Protection against unintentional misuse
+
+The implementers SHOULD consider how to limit the load of the API from perfectly legal but unintentionally complex or frequent API calls to the query endpoints. Possible solutions for this are:
+
+* The GET endpoints SHOULD be provided with e.g. rate limiter for calls coming in from an individual IP address. 
+* The GET/wrp endpoint is an example of an API method that allows throwing a lot of computational load for a server serving data from a potentially large database of Wallet-Relying Party information via requesting unnecessarily complex query parameter combinations. Best practices for limiting the number of query parameters in a valid API call SHOULD be tested with multiple Wallet Solutions - with an outcome as a documented guideline for proper use of the Registry API. Improperly configured API calls can be rejected at selected level of the backend architecture.
+
+The Registrar SHALL publish in their respective API documentation what limits it has configured regarding rate limits for legal use, or use of the query parameters. E.g., it could be that the API allows only 3 calls per minute from each IP address, and/or queries with total of 4 parameters (both values are examples - actual limits must be tested during the API implementation and test phases).
+
 ### 4 References
 
 | Reference                              | Description                                  |
@@ -279,6 +309,8 @@ The OpenAPI 3.1 compatible REST API methods for the above are provided in Annex 
 | [CIR for BRIS]                         | [CIR (EU) 2021/1042 on technical specifications and procedures for the system of interconnection of registers](https://eur-lex.europa.eu/eli/reg_impl/2021/1042/oj)      |
 | [Common Set of Relying Party Information to be Registered]    |       [The European Commission Technical Specification on Common Set of Relying Party Information to be Registered](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/blob/main/docs/technical-specifications/ts6-common-set-of-rp-information-to-be-registered.md)         |
 | [Provider information specification]                            | [The European Commission Technical Specification of systems enabling the notification and subsequent publication of Provider information](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/blob/main/docs/technical-specifications/ts2-notification-publication-provider-information.md) |
+| [Specification of Common Interface for Data Deletion Requests] |  [The European Commission Specification of Common Interface for Data Deletion Requests to Relying Parties](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/blob/main/docs/technical-specifications/ts7-common-interface-for-data-deletion-request.md)   |
+| [ETSI TS 119 475]                      | [ETSI TS 119 475 V0.0.6 Electronic Signatures and Trust Infrastructure (ESI); Relying Party attributes supporting EUDI Wallet user's authorisation decisions](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/287) (draft)                                    |
 | [ETSI TS 119 612]                      | [ETSI TS 119 612 V2.3.1 Electronic Signatures and Trust Infrastructure (ESI); Trusted Lists](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/41)                                     |
 | [ETSI EN 319 412-1]                    | [ETSI EN 319 412-1 V1.5.1 Electronic Signatures and Trust Infrastructure (ESI); Certificate Profiles; Part 1: Overview and common data structures](https://github.com/eu-digital-identity-wallet/eudi-doc-standards-and-technical-specifications/issues/143)                                     |
 | [ISO8601-1]                            | [ISO 8601-1:2019 Date and Time - Representations for information interchange - Part 1: Basic rules](https://www.iso.org/obp/ui/#iso:std:iso:8601:-1:ed-1:v1:en)   |
