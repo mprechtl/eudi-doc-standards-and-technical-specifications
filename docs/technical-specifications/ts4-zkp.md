@@ -15,7 +15,7 @@ The present document specifies the technical specification and requirements for 
 | `0.1` | 03.04.2025 | Initial version for discussion |
 | `0.2` | 23.04.2025 | Updates based on first group meeting |
 | `0.3` | 02.05.2025 | Updates based on second group meeting |
-| `0.4` | 21.05.2025 | Final version |
+| `1.0` | 21.05.2025 | Final version |
 
 
 ## 1 Introduction and Overview
