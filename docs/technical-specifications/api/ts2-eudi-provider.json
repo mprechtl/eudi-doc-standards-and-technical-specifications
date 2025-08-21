@@ -62,20 +62,6 @@
 				}
 			}
 		},
-		"Identifier" : 
-		{
-			"type": "object",
-			"properties":
-			{
-			}
-		},
-		"Law" : 
-		{
-			"type": "object",
-			"properties":
-			{
-			}
-		},
 		"Law" : 
 		{
 			"type": "object",
